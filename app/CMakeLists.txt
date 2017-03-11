@@ -2,9 +2,9 @@
 include_directories ("${PROJECT_SOURCE_DIR}/math")
 
 # Set Properties->General->Configuration Type to Application(.exe)
-# Creates polygons_cxx.exe with the listed sources (main.cxx)
+# Creates polygons_cxx.exe with the listed sources (main.cpp)
 # Adds sources to the Solution Explorer
-add_executable (polygons_cxx main.cxx)
+add_executable (polygons_cxx main.cpp)
 
 # Properties->Linker->Input->Additional Dependencies
 target_link_libraries (polygons_cxx  math)

@@ -2,18 +2,18 @@
 # having to explicitly list each header and source file
 file (GLOB MATH_SOURCES
 	  "*.h"
-      "*.cxx")
+      "*.cpp")
 
 # Collect sources into the variable SIMPLE_FUNCTION_SOURCES
 file (GLOB SIMPLE_FUNCTION_SOURCES
       "simple/*.h"
-      "simple/*.cxx")
+      "simple/*.cpp")
 
 # Another way to collect sources into a variable ADVANCED_FUNCTION_SOURCES
 # by explicitly specifying the source files
 set  (ADVANCED_FUNCTION_SOURCES
       "advanced/AdvancedFunctions.h"
-      "advanced/AdvancedFunctions.cxx")
+      "advanced/AdvancedFunctions.cpp")
 
 # Create named folders for the sources within the .vcproj
 # Empty name lists them directly under the .vcproj
