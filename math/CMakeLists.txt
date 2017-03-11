@@ -1,9 +1,10 @@
-# Collect sources into the variable MATH_SOURCES with 
+# Collect sources into the variable MATH_SOURCES with
 # having to explicitly list each header and source file
 file (GLOB MATH_SOURCES
-	  "*.h")
+	  "*.h"
+      "*.cxx")
 
-# Collect sources into the variable SIMPLE_FUNCTION_SOURCES  
+# Collect sources into the variable SIMPLE_FUNCTION_SOURCES
 file (GLOB SIMPLE_FUNCTION_SOURCES
       "simple/*.h"
       "simple/*.cxx")

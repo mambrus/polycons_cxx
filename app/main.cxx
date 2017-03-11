@@ -5,6 +5,7 @@
 
 #include <simple/SimpleFunctions.h>
 #include <advanced/AdvancedFunctions.h>
+#include <Vector.h>
 
 int main (int argc, char *argv[])
 {
@@ -13,6 +14,8 @@ int main (int argc, char *argv[])
         fprintf(stdout,"%s\n", "Insufficient input - enter a value.");
         return 1;
     }
+
+	Vector A;
 
     double inputValue = atof(argv[1]);
 
