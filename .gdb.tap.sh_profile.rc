@@ -1,0 +1,17 @@
+TCP_TAP_FIRST_PORT=1766
+TCP_TAP_NICNAME='localhost'
+TCP_TAP_CMD="$GDB_BIN"
+TAP_LOG_NAME=/tmp/gdb.tap.polygon_cxx.log
+TAP_LOG=yes
+#TAP_SIDE_SESSION=yes
+TAP_SIDE_SESSION=no
+
+# Note the following are fallbacks. You would normally want this set in
+# ~/.bash_profile. .gdb.tap.sh_profile.rc or /etc/gdb.tap.sh_profile.rc If
+# in any of these file there, it will have precedency.
+
+#Big to the right
+#XTELNET_GEOMETRY='-geometry 112x88-0+0'
+
+#Small upper left
+XTELNET_GEOMETRY='-geometry 103x33+0+31'

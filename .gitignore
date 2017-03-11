@@ -9,3 +9,9 @@ compile_commands.json
 CTestTestfile.cmake
 
 BUILD/
+
+.env.local
+lua.c
+cscope.*
+tags
+c-tags
