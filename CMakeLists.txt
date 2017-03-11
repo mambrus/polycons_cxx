@@ -1,15 +1,15 @@
 cmake_minimum_required (VERSION 2.6)
 
-# Maps to a solution file (Tutorial.sln). The solution will 
+# Maps to a solution file (Polygon_cxx.sln). The solution will
 # have all targets (exe, lib, dll) as projects (.vcproj)
-project (Tutorial)
+project (Polygon_cxx)
 
 # Turn on the ability to create folders to organize projects (.vcproj)
 # It creates "CMakePredefinedTargets" folder by default and adds CMake
 # defined projects like INSTALL.vcproj and ZERO_CHECK.vcproj
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-# Set compiler flags and options. 
+# Set compiler flags and options.
 # Here it is setting the Visual Studio warning level to 4
 # set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 
@@ -25,6 +25,6 @@ add_subdirectory (math)
 enable_testing()
 
 # Add test cases
-add_test(AppTest1 ${PROJECT_BINARY_DIR}/bin/app.exe 100)
-add_test(AppTest2 ${PROJECT_BINARY_DIR}/bin/app.exe 200)
-add_test(AppTest3 ${PROJECT_BINARY_DIR}/bin/app.exe 300)
+add_test(AppTest1 ${PROJECT_BINARY_DIR}/bin/polygons_cxx.exe 100)
+add_test(AppTest2 ${PROJECT_BINARY_DIR}/bin/polygons_cxx.exe 200)
+add_test(AppTest3 ${PROJECT_BINARY_DIR}/bin/polygons_cxx.exe 300)

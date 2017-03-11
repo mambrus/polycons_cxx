@@ -1,5 +1,5 @@
-// the configured options and settings for Tutorial
-#define Tutorial_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
-#define Tutorial_VERSION_MINOR @Tutorial_VERSION_MINOR@
+// the configured options and settings for Polygon_cxx
+#define Polygon_cxx_VERSION_MAJOR @Tutorial_VERSION_MAJOR@
+#define Polygon_cxx_VERSION_MINOR @Tutorial_VERSION_MINOR@
 #cmakedefine USE_MYMATH
 
