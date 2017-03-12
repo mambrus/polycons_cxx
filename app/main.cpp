@@ -32,6 +32,9 @@ int main(int argc, char *argv[])
 		11, 12, 13, 14
 	};
 
+	// ===========================================
+	cout << "Constructor and assignments:" << endl;
+	// ===========================================
 	Vector A(NELEM(a), a);
 	Vector B;
 	B = A;
@@ -42,6 +45,9 @@ int main(int argc, char *argv[])
 	cout << "A:" << A << endl
 	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
 
+	// ===========================================
+	cout << "Index operator:" << endl;
+	// ===========================================
 	for (int i = 0; i < 4; i++) {
 		A[i] = 30 + i;
 	}
@@ -54,25 +60,54 @@ int main(int argc, char *argv[])
 	cout << "A:" << A << endl
 	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
 
-	// Exceed boundaries deliberately
+	// ===========================================
+	cout << "Linear algebra operators (+/-):" << endl;
+	// ===========================================
+	{
+		Vector A(4, 11, 12, 13, 14);
+		Vector B(4, 21, 22, 23, 24);
+		cout << "A:" << A << endl;
+		cout << "B:" << B << endl;
+		Vector C = A + B;
+		Vector D = B - C;
+		cout << "C:" << C << endl;
+		cout << "D:" << D << endl;
+		cout << "Source variables are now also tainted" << endl;
+		cout << "A:" << A << endl;
+		cout << "B:" << B << endl;
+	}
 
-	//First round - catch the exception
+	// ===========================================
+	cout << "Linear algebra operators (mul/div):" << endl;
+	// ===========================================
+	{
+		Vector A(4, 11, 12, 13, 14);
+		Vector B(4, 33, 44, 55, 66);
+		cout << "A:" << A << endl;
+		cout << "B:" << B << endl;
+		Vector C = A * 2;
+		Vector D = B / 3;
+		cout << "C:" << C << endl;
+		cout << "D:" << D << endl;
+		cout << "Source variables are now also tainted" << endl;
+		cout << "A:" << A << endl;
+		cout << "B:" << B << endl;
+	}
+
+	// ===========================================
+	cout << "Test exceptions:" << endl;
+	// ===========================================
+	//
+	// Index operator: Exceed boundaries deliberately
 	for (int i = 0; i < (4 + 1); i++) {
 		try {
 			D[i] = B[i];
 		}
 		catch(const std::invalid_argument & e) {
-			cout << "Dang! Exception happened at index=" << i <<
-			    " and caught." << endl;
+			cout << "Dang! Exception \"invalid_argument\" at index="
+			    << i << " and caught. Further info: " << e.what() <<
+			    endl;
 		}
-	}
-
-	cout << "A:" << A << endl
-	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
-
-	//Second try - don't bother catching
-	for (int i = 0; i < (4 + 1); i++) {
-		C[i] = B[i];
 	}
 
 	cout << "A:" << A << endl

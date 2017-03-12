@@ -30,6 +30,7 @@ MATH_EXPORT class Vector {
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
+	virtual bool is_zero(const vtype &);
 
  public:
 	MATH_EXPORT Vector();
@@ -46,6 +47,12 @@ MATH_EXPORT class Vector {
 
 	// Index operator
 	MATH_EXPORT virtual vtype & operator[] (size_t i);
+
+	//Linear algebra operators
+	MATH_EXPORT virtual Vector & operator +(const Vector & v);
+	MATH_EXPORT virtual Vector & operator -(const Vector & v);
+	MATH_EXPORT virtual Vector & operator *(const vtype & m);
+	MATH_EXPORT virtual Vector & operator /(const vtype & d);
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;

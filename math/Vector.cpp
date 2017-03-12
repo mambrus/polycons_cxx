@@ -96,6 +96,65 @@ vtype & Vector::operator [](size_t i) {
 	return m_v[i];
 }
 
+// Add operator
+Vector & Vector::operator +(const Vector & v)
+{
+	if (m_n != v.m_n) {
+		std::ostringstream s;
+		s << "Vectors must have the same dimension to be added. [" <<
+		    (m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		std::string eMsg(s.str());
+		throw std::invalid_argument(eMsg);
+	}
+
+	for (size_t i = 0; i < m_n; i++) {
+		m_v[i] += v.m_v[i];
+	}
+	return *this;
+}
+
+// Subtract operator
+Vector & Vector::operator -(const Vector & v)
+{
+	if (m_n != v.m_n) {
+		std::ostringstream s;
+		s << "Vectors must have the same dimension to be subtracted. ["
+		    << (m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		std::string eMsg(s.str());
+		throw std::invalid_argument(eMsg);
+	}
+
+	for (size_t i = 0; i < m_n; i++) {
+		m_v[i] -= v.m_v[i];
+	}
+	return *this;
+}
+
+// Multiply operator
+Vector & Vector::operator *(const vtype & m)
+{
+	for (size_t i = 0; i < m_n; i++) {
+		m_v[i] *= m;
+	}
+	return *this;
+}
+
+// Division operator
+Vector & Vector::operator /(const vtype & d)
+{
+	if (this->is_zero(d)) {
+		std::ostringstream s;
+		s << "Vector division would be by zero! (avoided)";
+		std::string eMsg(s.str());
+		throw std::invalid_argument(eMsg);
+	}
+
+	for (size_t i = 0; i < m_n; i++) {
+		m_v[i] /= d;
+	}
+	return *this;
+}
+
 // Destructor.
 Vector::~Vector()
 {
@@ -108,3 +167,11 @@ Vector::~Vector()
 /* Class stats variables */
 int Vector::instances = 0;
 int Vector::ntotever = 0;
+
+bool Vector::is_zero(const vtype & d)
+{
+	if (d == 0)
+		return true;
+	else
+		return false;
+}
