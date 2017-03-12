@@ -97,62 +97,64 @@ vtype & Vector::operator [](size_t i) {
 }
 
 // Add operator
-Vector & Vector::operator +(const Vector & v)
+const Vector operator +(const Vector lhs, const Vector & v)
 {
-	if (m_n != v.m_n) {
+	if (lhs.m_n != v.m_n) {
 		std::ostringstream s;
 		s << "Vectors must have the same dimension to be added. [" <<
-		    (m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		    (lhs.m_n - 1) << "] != [" << (v.m_n - 1) << "]";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
 
-	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] += v.m_v[i];
+	for (size_t i = 0; i < lhs.m_n; i++) {
+		lhs.m_v[i] += v.m_v[i];
 	}
-	return *this;
+	return lhs;
 }
 
 // Subtract operator
-Vector & Vector::operator -(const Vector & v)
+const Vector operator -(const Vector lhs, const Vector & v)
 {
-	if (m_n != v.m_n) {
+	if (lhs.m_n != v.m_n) {
 		std::ostringstream s;
-		s << "Vectors must have the same dimension to be subtracted. ["
-		    << (m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		s << "Vectors must have the same dimension to be added. [" <<
+		    (lhs.m_n - 1) << "] != [" << (v.m_n - 1) << "]";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
 
-	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] -= v.m_v[i];
+	for (size_t i = 0; i < lhs.m_n; i++) {
+		lhs.m_v[i] -= v.m_v[i];
 	}
-	return *this;
+	return lhs;
 }
 
 // Multiply operator
-Vector & Vector::operator *(const vtype & m)
+const Vector operator *(const Vector lhs, const vtype & m)
 {
-	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] *= m;
+	for (size_t i = 0; i < lhs.m_n; i++) {
+		lhs.m_v[i] *= m;
 	}
-	return *this;
+	return lhs;
 }
 
 // Division operator
-Vector & Vector::operator /(const vtype & d)
+const Vector operator /(const Vector lhs, const vtype & d)
 {
-	if (this->is_zero(d)) {
+#ifdef NEVER
+	if (lhs.is_zero(d)) {
 		std::ostringstream s;
 		s << "Vector division would be by zero! (avoided)";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
+#endif
 
-	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] /= d;
+	for (size_t i = 0; i < lhs.m_n; i++) {
+		lhs.m_v[i] /= d;
 	}
-	return *this;
+	return lhs;
 }
 
 // Destructor.

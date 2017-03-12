@@ -31,34 +31,60 @@ int main(int argc, char *argv[])
 	int a[] = {
 		11, 12, 13, 14
 	};
+	{
+		// ===========================================
+		cout << "Constructor and assignments:" << endl;
+		// ===========================================
+		Vector A(NELEM(a), a);
+		Vector B;
+		B = A;
 
-	// ===========================================
-	cout << "Constructor and assignments:" << endl;
-	// ===========================================
-	Vector A(NELEM(a), a);
-	Vector B;
-	B = A;
+		Vector C(4, 21, 22, 23, 24);
+		Vector D = C;
 
-	Vector C(4, 21, 22, 23, 24);
-	Vector D = C;
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
 
-	cout << "A:" << A << endl
-	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
+		// ===========================================
+		cout << "Index operator:" << endl;
+		// ===========================================
+		for (int i = 0; i < 4; i++) {
+			A[i] = 30 + i;
+		}
 
-	// ===========================================
-	cout << "Index operator:" << endl;
-	// ===========================================
-	for (int i = 0; i < 4; i++) {
-		A[i] = 30 + i;
+		// Use debugger in this loop as CTOR/DTOR (tmp) operations may occur.
+		for (int i = 0; i < 4; i++) {
+			B[i] = A[3 - i];
+			C[i] = B[3 - i];
+			D[i] = C[i] + 1;
+		}
+
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
+
+		// ===========================================
+		cout << "Test exceptions:" << endl;
+		// ===========================================
+		//
+		// Index operator: Exceed boundaries deliberately
+		for (int i = 0; i < (4 + 1); i++) {
+			try {
+				D[i] = B[i];
+			}
+			catch(const std::invalid_argument & e) {
+				cout <<
+				    "Dang! Exception \"invalid_argument\" at index="
+				    << i << " and caught. Further info: " <<
+				    e.what() << endl;
+			}
+		}
+
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
 	}
-
-	// Use debugger in this loop as CTOR/DTOR (tmp) operations may occur.
-	for (int i = 0; i < 4; i++) {
-		B[i] = A[3 - i];
-	}
-
-	cout << "A:" << A << endl
-	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
 
 	// ===========================================
 	cout << "Linear algebra operators (+/-):" << endl;
@@ -72,7 +98,7 @@ int main(int argc, char *argv[])
 		Vector D = B - C;
 		cout << "C:" << C << endl;
 		cout << "D:" << D << endl;
-		cout << "Source variables are now also tainted" << endl;
+		cout << "Source variables are now NOT tainted" << endl;
 		cout << "A:" << A << endl;
 		cout << "B:" << B << endl;
 	}
@@ -89,30 +115,13 @@ int main(int argc, char *argv[])
 		Vector D = B / 3;
 		cout << "C:" << C << endl;
 		cout << "D:" << D << endl;
-		cout << "Source variables are now also tainted" << endl;
+		cout << "Source variables are now NOT tainted" << endl;
 		cout << "A:" << A << endl;
 		cout << "B:" << B << endl;
 	}
 
-	// ===========================================
-	cout << "Test exceptions:" << endl;
-	// ===========================================
-	//
-	// Index operator: Exceed boundaries deliberately
-	for (int i = 0; i < (4 + 1); i++) {
-		try {
-			D[i] = B[i];
-		}
-		catch(const std::invalid_argument & e) {
-			cout << "Dang! Exception \"invalid_argument\" at index="
-			    << i << " and caught. Further info: " << e.what() <<
-			    endl;
-		}
-	}
-
-	cout << "A:" << A << endl
-	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
-
+	cout << Vector::stats(cout);
+	cout << endl;
 /*
 	hash<int> myobject;
 	myobject["a"] = 1;

@@ -2,7 +2,8 @@
 #    define Vector_h
 #    include <MathExports.h>
 #    include <stdlib.h>
-#    include<iostream>
+#    include <iostream>
+#    include <sstream>
 
 using namespace std;
 
@@ -49,10 +50,14 @@ MATH_EXPORT class Vector {
 	MATH_EXPORT virtual vtype & operator[] (size_t i);
 
 	//Linear algebra operators
-	MATH_EXPORT virtual Vector & operator +(const Vector & v);
-	MATH_EXPORT virtual Vector & operator -(const Vector & v);
-	MATH_EXPORT virtual Vector & operator *(const vtype & m);
-	MATH_EXPORT virtual Vector & operator /(const vtype & d);
+	MATH_EXPORT const friend Vector operator +(const Vector lhs,
+						   const Vector & v);
+	MATH_EXPORT const friend Vector operator -(const Vector lhs,
+						   const Vector & v);
+	MATH_EXPORT const friend Vector operator *(const Vector lhs,
+						   const vtype & m);
+	MATH_EXPORT const friend Vector operator /(const Vector lhs,
+						   const vtype & d);
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;
@@ -61,6 +66,16 @@ MATH_EXPORT class Vector {
 			out << v.m_v[i] << ",";
 		};
 		out << v.m_v[i] << "}";
+		return out;
+	}
+
+	MATH_EXPORT static ostream & stats(ostream & out) {
+		out << "{i=";
+		out << instances;
+		out << ",";
+		out << "t=";
+		out << ntotever;
+		out << "}" << endl;
 		return out;
 	}
 
