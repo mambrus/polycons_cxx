@@ -54,6 +54,30 @@ int main(int argc, char *argv[])
 	cout << "A:" << A << endl
 	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
 
+	// Exceed boundaries deliberately
+
+	//First round - catch the exception
+	for (int i = 0; i < (4 + 1); i++) {
+		try {
+			D[i] = B[i];
+		}
+		catch(const std::invalid_argument & e) {
+			cout << "Dang! Exception happened at index=" << i <<
+			    " and caught." << endl;
+		}
+	}
+
+	cout << "A:" << A << endl
+	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
+
+	//Second try - don't bother catching
+	for (int i = 0; i < (4 + 1); i++) {
+		C[i] = B[i];
+	}
+
+	cout << "A:" << A << endl
+	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
+
 /*
 	hash<int> myobject;
 	myobject["a"] = 1;

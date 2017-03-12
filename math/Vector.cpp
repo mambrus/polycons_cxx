@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <iostream>
+#include <stdexcept>
 
 // Default constructor
 Vector::Vector()
@@ -84,6 +85,9 @@ Vector & Vector::operator =(const Vector & v)
 
 // Index operator 
 vtype & Vector::operator [](size_t i) {
+	if (i > (m_n - 1)) {
+		throw std::invalid_argument("Index out of range");
+	}
 	return m_v[i];
 }
 
