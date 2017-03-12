@@ -7,23 +7,46 @@
 #include <advanced/AdvancedFunctions.h>
 #include <Vector.h>
 
-int main (int argc, char *argv[])
+#include<iostream>
+#include<map>
+
+using namespace std;
+
+template < class T > class hash {
+ private:
+	map < string, T > _map;
+ public:
+	T & operator[](string x);
+	friend ostream & operator<<(ostream & out, const hash < T > &rhs) {
+		return out << "test";
+	}
+};
+
+template < class T > T & hash < T >::operator[](string x) {
+	return _map[x];
+}
+
+int main(int argc, char *argv[])
 {
-    if (argc < 2)
-    {
-        fprintf(stdout,"%s\n", "Insufficient input - enter a value.");
-        return 1;
-    }
 
-	Vector A;
+	int a[] = {
+		1, 2, 3, 4
+	};
 
-    double inputValue = atof(argv[1]);
+	Vector A(NELEM(a), a);
+	Vector B;
+	B = A;
 
-    double sumValue = mysum(inputValue, inputValue);
-    double sqrtValue = mysqrt(inputValue);
+	Vector C(4, 1, 2, 3, 4);
+	Vector D = C;
 
-    fprintf(stdout,"The sum of %g and %g is %g\n", inputValue, inputValue, sumValue);
-    fprintf(stdout,"The square root of %g is %g\n", inputValue, sqrtValue);
+/*
+	cout << A << "\n" << A << "\n"<< B << "\n"<< C << "\n"<< D << "\n" << endl;
+*/	
+	hash<int> myobject;
+	myobject["a"] = 1;
+	cout << myobject["a"] << endl;
+	cout << myobject << endl;
 
-    return 0;
+	return 0;
 }
