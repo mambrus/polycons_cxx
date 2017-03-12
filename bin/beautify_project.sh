@@ -86,9 +86,9 @@ if [ "X$BEAUTIFY_EXCLUDE_FILES" != "X" ]; then
 	#Trim leading and trailing whitespace and expand spaces between with " -e "
 	_EXCLUDE_FILES=$(xargs <<< $BEAUTIFY_EXCLUDE_FILES | sed -Ee 's/[[:space:]]+/ -e /g')
 
-	doit "git ls-files '*.[ch]' | grep -ve $_EXCLUDE_FILES | xargs -I'{}' indent '{}'"
+	doit "git ls-files '*.cpp' '*.h' | grep -ve $_EXCLUDE_FILES | xargs -I'{}' indent '{}'"
 else
-	doit "git ls-files '*.[ch]' | xargs -I'{}' indent '{}'"
+	doit "git ls-files '*.cpp' '*.h' | xargs -I'{}' indent '{}'"
 fi
 
 #Clean-up backups as they are not needed (git keeps track for us)
