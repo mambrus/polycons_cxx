@@ -25,8 +25,9 @@
 " Local overloads. Note the syntax for setting environment variables is
 " similar to shell, but *NOT* the same.
 
-" Workplace H
-let $KDBG_GEOMETRY = "-geometry 1035x1385+1523--2"
+" Example of local oveload in .vim.local. Note: not preferred
+" Workplace H (example of local overload)
+" let $KDBG_GEOMETRY = "-geometry 1035x1385+1523--2"
 
 command! Kdbg call <SID>StartDebugging()
 fun! <SID>StartDebugging()
