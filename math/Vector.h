@@ -1,5 +1,6 @@
 #ifndef Vector_h
 #    define Vector_h
+#    include <MathExports.h>
 #    include <stdlib.h>
 #    include<iostream>
 
@@ -12,35 +13,48 @@ using namespace std;
 //Temporary type until class is made template able
 #    define vtype int
 
-class Vector {
+MATH_EXPORT class Vector {
+
+ protected:
+	//Sub-optimal ways of keeping track of statistics
+	static int instances;
+	static int ntotever;
+	const inline void statmng() {
+		instances++;
+		m_uid = ntotever;
+		ntotever++;
+	};
 
  private:
 	vtype * m_v;
-	int m_n;
+	size_t m_n;
+	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
+				   tmp/stack instances. */
 
  public:
-	 Vector();
-	 Vector(size_t, vtype[]);
-	 Vector(size_t ...);
+	MATH_EXPORT Vector();
+	MATH_EXPORT Vector(size_t, vtype[]);
+	MATH_EXPORT Vector(size_t ...);
 
 	//Copy constructor
-	 Vector(const Vector & v);
+	MATH_EXPORT Vector(const Vector & v);
 
 	// Operators
 	// Assignment
-	virtual Vector & operator =(int i);
-	virtual Vector & operator =(const Vector & v);
+	MATH_EXPORT virtual Vector & operator =(const vtype i);
+	MATH_EXPORT virtual Vector & operator =(const Vector & v);
 
-	friend ostream & operator<<(ostream & out, const Vector & v) {
+	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
+		size_t i;
 		out << "{";
-		for (int i = 0; i < v.m_n; i++) {
-			out << v.m_v[i];
+		for (i = 0; i < v.m_n - 1; i++) {
+			out << v.m_v[i] << ",";
 		};
-		out << "}\n";
+		out << v.m_v[i] << "}";
 		return out;
 	}
 
-	~Vector();
+	MATH_EXPORT ~ Vector();
 };
 
 #endif				//Vector_h

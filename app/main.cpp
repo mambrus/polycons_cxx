@@ -1,4 +1,3 @@
-// A simple program that computes the square root of a number
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -9,7 +8,7 @@
 
 #include<iostream>
 #include<map>
-
+/*
 using namespace std;
 
 template < class T > class hash {
@@ -25,28 +24,29 @@ template < class T > class hash {
 template < class T > T & hash < T >::operator[](string x) {
 	return _map[x];
 }
-
+*/
 int main(int argc, char *argv[])
 {
 
 	int a[] = {
-		1, 2, 3, 4
+		11, 12, 13, 14
 	};
 
 	Vector A(NELEM(a), a);
 	Vector B;
 	B = A;
 
-	Vector C(4, 1, 2, 3, 4);
+	Vector C(4, 21, 22, 23, 24);
 	Vector D = C;
 
+	cout << "A:" << A << endl
+	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
+
 /*
-	cout << A << "\n" << A << "\n"<< B << "\n"<< C << "\n"<< D << "\n" << endl;
-*/	
 	hash<int> myobject;
 	myobject["a"] = 1;
 	cout << myobject["a"] << endl;
 	cout << myobject << endl;
-
+*/
 	return 0;
 }
