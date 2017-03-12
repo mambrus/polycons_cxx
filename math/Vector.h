@@ -44,6 +44,9 @@ MATH_EXPORT class Vector {
 	MATH_EXPORT virtual Vector & operator =(const vtype i);
 	MATH_EXPORT virtual Vector & operator =(const Vector & v);
 
+	// Index operator
+	MATH_EXPORT virtual vtype & operator[] (size_t i);
+
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;
 		out << "{";

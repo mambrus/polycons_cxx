@@ -82,6 +82,11 @@ Vector & Vector::operator =(const Vector & v)
 	return *this;
 }
 
+// Index operator 
+vtype & Vector::operator [](size_t i) {
+	return m_v[i];
+}
+
 // Destructor.
 Vector::~Vector()
 {

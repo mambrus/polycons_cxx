@@ -42,6 +42,18 @@ int main(int argc, char *argv[])
 	cout << "A:" << A << endl
 	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
 
+	for (int i = 0; i < 4; i++) {
+		A[i] = 30 + i;
+	}
+
+	// Use debugger in this loop as CTOR/DTOR (tmp) operations may occur.
+	for (int i = 0; i < 4; i++) {
+		B[i] = A[3 - i];
+	}
+
+	cout << "A:" << A << endl
+	    << "B:" << B << endl << "C:" << C << endl << "D:" << D << endl;
+
 /*
 	hash<int> myobject;
 	myobject["a"] = 1;
