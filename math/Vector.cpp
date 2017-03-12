@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <iostream>
 #include <stdexcept>
+#include <sstream>
 
 // Default constructor
 Vector::Vector()
@@ -83,10 +84,14 @@ Vector & Vector::operator =(const Vector & v)
 	return *this;
 }
 
-// Index operator 
+// Index operator
 vtype & Vector::operator [](size_t i) {
 	if (i > (m_n - 1)) {
-		throw std::invalid_argument("Index out of range");
+		std::ostringstream s;
+		s << "Index [" << i <<
+		    "] is out of range for Vector[" << (m_n - 1) << "]";
+		std::string eMsg(s.str());
+		throw std::invalid_argument(eMsg);
 	}
 	return m_v[i];
 }
