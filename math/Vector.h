@@ -82,4 +82,6 @@ MATH_EXPORT class Vector {
 	MATH_EXPORT ~ Vector();
 };
 
+#include "Vector.tpp"
+
 #endif				//Vector_h
