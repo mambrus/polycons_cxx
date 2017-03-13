@@ -11,10 +11,7 @@ using namespace std;
 #    define NELEM( A ) \
 	( sizeof(A) / sizeof(A[0]) )
 
-//Temporary type until class is made template able
-#    define VTYPE int
-
-MATH_EXPORT class Vector {
+MATH_EXPORT template < class VTYPE > class Vector {
 
  protected:
 	//Sub-optimal ways of keeping track of statistics
@@ -49,6 +46,7 @@ MATH_EXPORT class Vector {
 	// Index operator
 	MATH_EXPORT virtual VTYPE & operator[] (size_t i);
 
+#    ifdef NO_LINALGEBRA
 	//Linear algebra operators
 	MATH_EXPORT const friend Vector operator +(const Vector lhs,
 						   const Vector & v);
@@ -58,6 +56,7 @@ MATH_EXPORT class Vector {
 						   const VTYPE & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
 						   const VTYPE & d);
+#    endif			//NO_LINALGEBRA
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;
@@ -82,6 +81,6 @@ MATH_EXPORT class Vector {
 	MATH_EXPORT ~ Vector();
 };
 
-#include "Vector.tpp"
+#    include "Vector.tpp"
 
 #endif				//Vector_h

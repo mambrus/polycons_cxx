@@ -28,19 +28,19 @@ template < class T > T & hash < T >::operator[](string x) {
 int main(int argc, char *argv[])
 {
 
-	int a[] = {
-		11, 12, 13, 14
-	};
 	{
+		int a[] = {
+			11, 12, 13, 14
+		};
 		// ===========================================
 		cout << "Constructor and assignments:" << endl;
 		// ===========================================
-		Vector A(NELEM(a), a);
-		Vector B;
+		Vector < int >A(NELEM(a), a);
+		Vector < int >B;
 		B = A;
 
-		Vector C(4, 21, 22, 23, 24);
-		Vector D = C;
+		Vector < int >C(4, 21, 22, 23, 24);
+		Vector < int >D = C;
 
 		cout << "A:" << A << endl
 		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
@@ -86,16 +86,17 @@ int main(int argc, char *argv[])
 		    endl;
 	}
 
+#ifdef NO_LINALGEBRA
 	// ===========================================
 	cout << "Linear algebra operators (+/-):" << endl;
 	// ===========================================
 	{
-		Vector A(4, 11, 12, 13, 14);
-		Vector B(4, 21, 22, 23, 24);
+		Vector < int >A(4, 11, 12, 13, 14);
+		Vector < int >B(4, 21, 22, 23, 24);
 		cout << "A:" << A << endl;
 		cout << "B:" << B << endl;
-		Vector C = A + B;
-		Vector D = B - C;
+		Vector < int >C = A + B;
+		Vector < int >D = B - C;
 		cout << "C:" << C << endl;
 		cout << "D:" << D << endl;
 		cout << "Source variables are now NOT tainted" << endl;
@@ -107,12 +108,12 @@ int main(int argc, char *argv[])
 	cout << "Linear algebra operators (mul/div):" << endl;
 	// ===========================================
 	{
-		Vector A(4, 11, 12, 13, 14);
-		Vector B(4, 33, 44, 55, 66);
+		Vector < int >A(4, 11, 12, 13, 14);
+		Vector < int >B(4, 33, 44, 55, 66);
 		cout << "A:" << A << endl;
 		cout << "B:" << B << endl;
-		Vector C = A * 2;
-		Vector D = B / 3;
+		Vector < int >C = A * 2;
+		Vector < int >D = B / 3;
 		cout << "C:" << C << endl;
 		cout << "D:" << D << endl;
 		cout << "Source variables are now NOT tainted" << endl;
@@ -120,7 +121,9 @@ int main(int argc, char *argv[])
 		cout << "B:" << B << endl;
 	}
 
-	cout << Vector::stats(cout);
+#endif //NO_LINALGEBRA
+
+	cout << Vector < int >::stats(cout);
 	cout << endl;
 /*
 	hash<int> myobject;
