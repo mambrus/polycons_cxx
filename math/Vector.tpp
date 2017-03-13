@@ -6,7 +6,8 @@
 #include <sstream>
 
 // Default constructor
-Vector::Vector()
+template < class VTYPE >
+Vector < VTYPE >::Vector()
 {
 	statmng();
 	m_n = 0;
@@ -15,7 +16,8 @@ Vector::Vector()
 // Copy constructor. Run-time invokes when ever an intermediate object is
 // needed. Typically part of an expression, i.e. temporary value of
 // sub-expression is created using this constructor.
-Vector::Vector(const Vector & v)
+template < class VTYPE >
+Vector < VTYPE >::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
@@ -28,7 +30,8 @@ Vector::Vector(const Vector & v)
 }
 
 // Assignment constructor  - integer array
-Vector::Vector(size_t i, VTYPE a[])
+template < class VTYPE >
+Vector < VTYPE >::Vector(size_t i, VTYPE a[])
 {
 	statmng();
 	m_n = i;
@@ -42,7 +45,8 @@ Vector::Vector(size_t i, VTYPE a[])
 
 // Assignment constructor  - Note that the type of the arguments is implicit
 // and needs to be the same as the Vector
-Vector::Vector(size_t i ...)
+template < class VTYPE >
+Vector < VTYPE >::Vector(size_t i ...)
 {
 	statmng();
 	va_list ap;
@@ -59,7 +63,8 @@ Vector::Vector(size_t i ...)
 }
 
 // Assignment operator  - Own element type
-Vector & Vector::operator =(const VTYPE i)
+template < class VTYPE >
+Vector< VTYPE > & Vector < VTYPE >::operator =(const VTYPE i)
 {
 	if (m_n > 1) {
 		free_array();
@@ -75,7 +80,8 @@ Vector & Vector::operator =(const VTYPE i)
 }
 
 // Copy operator (see also copy constructor)
-Vector & Vector::operator =(const Vector & v)
+template < class VTYPE >
+Vector< VTYPE > & Vector < VTYPE >::operator =(const Vector & v)
 {
 	if (m_n > 0 && (v.m_n != m_n)) {
 		free_array();
@@ -92,7 +98,8 @@ Vector & Vector::operator =(const Vector & v)
 }
 
 // Index operator
-VTYPE & Vector::operator [](size_t i) {
+template < class VTYPE >
+VTYPE & Vector < VTYPE >::operator [](size_t i) {
 	if (i > (m_n - 1)) {
 		std::ostringstream s;
 		s << "Index [" << i <<
@@ -103,6 +110,7 @@ VTYPE & Vector::operator [](size_t i) {
 	return *m_v[i];
 }
 
+#ifdef NO_LINALGEBRA
 // Add operator
 const Vector operator +(const Vector lhs, const Vector & v)
 {
@@ -149,23 +157,25 @@ const Vector operator *(const Vector lhs, const VTYPE & m)
 // Division operator
 const Vector operator /(const Vector lhs, const VTYPE & d)
 {
-#ifdef NEVER
+#    ifdef NEVER
 	if (lhs.is_zero(d)) {
 		std::ostringstream s;
 		s << "Vector division would be by zero! (avoided)";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
-#endif
+#    endif
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
 		*(lhs.m_v[i]) /= d;
 	}
 	return lhs;
 }
+#endif				//NO_LINALGEBRA
 
 // Destructor.
-Vector::~Vector()
+template < class VTYPE >
+Vector < VTYPE >::~Vector()
 {
 	--instances;
 	if (m_n > 0 && m_v) {
@@ -174,10 +184,14 @@ Vector::~Vector()
 }
 
 /* Class stats variables */
-int Vector::instances = 0;
-int Vector::ntotever = 0;
+// Below is probably not such a good idea...
+template < class VTYPE >
+int Vector < VTYPE >::instances = 0;
+template < class VTYPE >
+int Vector < VTYPE >::ntotever = 0;
 
-void Vector::free_array() {
+template < class VTYPE >
+void Vector < VTYPE >::free_array() {
 	if (m_n > 0 && m_v) {
 		for (size_t i = 0; i < m_n; i++) {
 			free(*m_v);
@@ -186,7 +200,9 @@ void Vector::free_array() {
 	}
 }
 
-bool Vector::is_zero(const VTYPE & d)
+
+template < class VTYPE >
+bool Vector < VTYPE >::is_zero(const VTYPE & d)
 {
 	if (d == 0)
 		return true;
