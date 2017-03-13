@@ -28,12 +28,13 @@ template < class T > T & hash < T >::operator[](string x) {
 int main(int argc, char *argv[])
 {
 
+	cout << endl;
 	{
 		int a[] = {
 			11, 12, 13, 14
 		};
 		// ===========================================
-		cout << "Constructor and assignments:" << endl;
+		cout << "Constructor and assignments <int>:" << endl;
 		// ===========================================
 		Vector < int >A(NELEM(a), a);
 		Vector < int >B;
@@ -47,7 +48,7 @@ int main(int argc, char *argv[])
 		    endl;
 
 		// ===========================================
-		cout << "Index operator:" << endl;
+		cout << "Index operator <int>:" << endl;
 		// ===========================================
 		for (int i = 0; i < 4; i++) {
 			A[i] = 30 + i;
@@ -65,7 +66,65 @@ int main(int argc, char *argv[])
 		    endl;
 
 		// ===========================================
-		cout << "Test exceptions:" << endl;
+		cout << "Test exception<int>s:" << endl;
+		// ===========================================
+		//
+		// Index operator: Exceed boundaries deliberately
+		for (int i = 0; i < (4 + 1); i++) {
+			try {
+				D[i] = B[i];
+			}
+			catch(const std::invalid_argument & e) {
+				cout <<
+				    "Dang! Exception \"invalid_argument\" at index="
+				    << i << " and caught. Further info: " <<
+				    e.what() << endl;
+			}
+		}
+
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
+	}
+	cout << endl;
+	{
+		double a[] = {
+			11.0, 12.0, 13.0, 14.0
+		};
+		// ===========================================
+		cout << "Constructor and assignments <double>:" << endl;
+		// ===========================================
+		Vector < double >A(NELEM(a), a);
+		Vector < double >B;
+		B = A;
+
+		Vector < double >C(4, 21.0, 22.0, 23.0, 24.0);
+		Vector < double >D = C;
+
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
+
+		// ===========================================
+		cout << "Index operator <double>:" << endl;
+		// ===========================================
+		for (int i = 0; i < 4; i++) {
+			A[i] = 30.3 + i;
+		}
+
+		// Use debugger in this loop as CTOR/DTOR (tmp) operations may occur.
+		for (int i = 0; i < 4; i++) {
+			B[i] = A[3 - i];
+			C[i] = B[3 - i];
+			D[i] = C[i] + 1;
+		}
+
+		cout << "A:" << A << endl
+		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
+		    endl;
+
+		// ===========================================
+		cout << "Test exceptions <double>:" << endl;
 		// ===========================================
 		//
 		// Index operator: Exceed boundaries deliberately
