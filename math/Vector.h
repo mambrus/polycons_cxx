@@ -12,7 +12,7 @@ using namespace std;
 	( sizeof(A) / sizeof(A[0]) )
 
 //Temporary type until class is made template able
-#    define vtype int
+#    define VTYPE int
 
 MATH_EXPORT class Vector {
 
@@ -27,15 +27,15 @@ MATH_EXPORT class Vector {
 	};
 
  private:
-	vtype * m_v;
+	VTYPE * m_v;
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
-	virtual bool is_zero(const vtype &);
+	virtual bool is_zero(const VTYPE &);
 
  public:
 	MATH_EXPORT Vector();
-	MATH_EXPORT Vector(size_t, vtype[]);
+	MATH_EXPORT Vector(size_t, VTYPE[]);
 	MATH_EXPORT Vector(size_t ...);
 
 	//Copy constructor
@@ -43,11 +43,11 @@ MATH_EXPORT class Vector {
 
 	// Operators
 	// Assignment
-	MATH_EXPORT virtual Vector & operator =(const vtype i);
+	MATH_EXPORT virtual Vector & operator =(const VTYPE i);
 	MATH_EXPORT virtual Vector & operator =(const Vector & v);
 
 	// Index operator
-	MATH_EXPORT virtual vtype & operator[] (size_t i);
+	MATH_EXPORT virtual VTYPE & operator[] (size_t i);
 
 	//Linear algebra operators
 	MATH_EXPORT const friend Vector operator +(const Vector lhs,
@@ -55,9 +55,9 @@ MATH_EXPORT class Vector {
 	MATH_EXPORT const friend Vector operator -(const Vector lhs,
 						   const Vector & v);
 	MATH_EXPORT const friend Vector operator *(const Vector lhs,
-						   const vtype & m);
+						   const VTYPE & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
-						   const vtype & d);
+						   const VTYPE & d);
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;

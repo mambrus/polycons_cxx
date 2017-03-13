@@ -19,7 +19,7 @@ Vector::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
-	m_v = (vtype *) calloc(v.m_n, sizeof(vtype));
+	m_v = (VTYPE *) calloc(v.m_n, sizeof(VTYPE));
 
 	for (size_t j = 0; j < m_n; j++) {
 		m_v[j] = v.m_v[j];
@@ -27,11 +27,11 @@ Vector::Vector(const Vector & v)
 }
 
 // Assignment constructor  - integer array
-Vector::Vector(size_t i, vtype a[])
+Vector::Vector(size_t i, VTYPE a[])
 {
 	statmng();
 	m_n = i;
-	m_v = (vtype *) calloc(i, sizeof(vtype));
+	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = a[j];
@@ -47,7 +47,7 @@ Vector::Vector(size_t i ...)
 
 	va_start(ap, i);
 	m_n = i;
-	m_v = (vtype *) calloc(i, sizeof(vtype));
+	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = va_arg(ap, int);
@@ -56,13 +56,13 @@ Vector::Vector(size_t i ...)
 }
 
 // Assignment operator  - Own element type
-Vector & Vector::operator =(const vtype i)
+Vector & Vector::operator =(const VTYPE i)
 {
 	if (m_n > 1) {
 		free(m_v);
-		m_v = (vtype *) calloc(1, sizeof(vtype));
+		m_v = (VTYPE *) calloc(1, sizeof(VTYPE));
 	} else if (m_n == 0) {
-		m_v = (vtype *) calloc(1, sizeof(vtype));
+		m_v = (VTYPE *) calloc(1, sizeof(VTYPE));
 	}
 	*(int *)m_v = i;
 	return *this;
@@ -76,7 +76,7 @@ Vector & Vector::operator =(const Vector & v)
 	}
 
 	m_n = v.m_n;
-	m_v = (vtype *) calloc(v.m_n, sizeof(vtype));
+	m_v = (VTYPE *) calloc(v.m_n, sizeof(VTYPE));
 
 	for (size_t i = 0; i < m_n; i++) {
 		m_v[i] = v.m_v[i];
@@ -85,7 +85,7 @@ Vector & Vector::operator =(const Vector & v)
 }
 
 // Index operator
-vtype & Vector::operator [](size_t i) {
+VTYPE & Vector::operator [](size_t i) {
 	if (i > (m_n - 1)) {
 		std::ostringstream s;
 		s << "Index [" << i <<
@@ -131,7 +131,7 @@ const Vector operator -(const Vector lhs, const Vector & v)
 }
 
 // Multiply operator
-const Vector operator *(const Vector lhs, const vtype & m)
+const Vector operator *(const Vector lhs, const VTYPE & m)
 {
 	for (size_t i = 0; i < lhs.m_n; i++) {
 		lhs.m_v[i] *= m;
@@ -140,7 +140,7 @@ const Vector operator *(const Vector lhs, const vtype & m)
 }
 
 // Division operator
-const Vector operator /(const Vector lhs, const vtype & d)
+const Vector operator /(const Vector lhs, const VTYPE & d)
 {
 #ifdef NEVER
 	if (lhs.is_zero(d)) {
@@ -170,7 +170,7 @@ Vector::~Vector()
 int Vector::instances = 0;
 int Vector::ntotever = 0;
 
-bool Vector::is_zero(const vtype & d)
+bool Vector::is_zero(const VTYPE & d)
 {
 	if (d == 0)
 		return true;
