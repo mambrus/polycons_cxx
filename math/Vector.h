@@ -28,13 +28,18 @@ MATH_EXPORT template < class VTYPE > class Vector {
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
+#    ifdef NEVER
 	virtual bool is_zero(const VTYPE &);
+#	endif
+
 	void free_array();
 
  public:
 	MATH_EXPORT Vector();
 	MATH_EXPORT Vector(size_t, VTYPE[]);
+#    ifdef NEVER
 	MATH_EXPORT Vector(size_t ...);
+#	endif
 
 	//Copy constructor
 	MATH_EXPORT Vector(const Vector & v);

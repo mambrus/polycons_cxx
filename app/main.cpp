@@ -33,6 +33,31 @@ int main(int argc, char *argv[])
 		int a[] = {
 			11, 12, 13, 14
 		};
+		int b[] = {
+			21, 22, 23, 24
+		};
+		int c[] = {
+			31, 32, 33, 34
+		};
+		int d[] = {
+			41, 42, 43, 44
+		};
+		Vector < int >A(4, a);
+		Vector < int >B(4, b);
+		Vector < int >C(4, c);
+		Vector < int >m[] = {
+			A, B, C
+		};
+		Vector < Vector < int > >matrix(3, m);
+		cout << matrix << endl;
+	}
+
+#ifdef NEVER
+	cout << endl;
+	{
+		int a[] = {
+			11, 12, 13, 14
+		};
 		// ===========================================
 		cout << "Constructor and assignments <int>:" << endl;
 		// ===========================================
@@ -144,6 +169,7 @@ int main(int argc, char *argv[])
 		    << "B:" << B << endl << "C:" << C << endl << "D:" << D <<
 		    endl;
 	}
+#endif //NEVER
 
 #ifdef NO_LINALGEBRA
 	// ===========================================
@@ -180,8 +206,7 @@ int main(int argc, char *argv[])
 		cout << "B:" << B << endl;
 	}
 
-=======
-#endif //NO_LINALGEBRA
+#endif				//NO_LINALGEBRA
 
 	cout << Vector < int >::stats(cout);
 	cout << endl;

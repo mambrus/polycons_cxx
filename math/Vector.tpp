@@ -1,6 +1,7 @@
 #include "Vector.h"
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
@@ -29,6 +30,12 @@ Vector < VTYPE >::Vector(const Vector & v)
 	}
 }
 
+/* Shallow copy */
+template < class VTYPE >
+static void assign(VTYPE & lhs, const VTYPE & rhs){
+	memcpy(&lhs, &rhs, sizeof(VTYPE));
+}
+
 // Assignment constructor  - integer array
 template < class VTYPE >
 Vector < VTYPE >::Vector(size_t i, VTYPE a[])
@@ -43,6 +50,7 @@ Vector < VTYPE >::Vector(size_t i, VTYPE a[])
 	}
 }
 
+#ifdef NEVER
 // Assignment constructor  - Note that the type of the arguments is implicit
 // and needs to be the same as the Vector
 template < class VTYPE >
@@ -50,6 +58,7 @@ Vector < VTYPE >::Vector(size_t i ...)
 {
 	statmng();
 	va_list ap;
+	VTYPE t;
 
 	va_start(ap, i);
 	m_n = i;
@@ -61,6 +70,7 @@ Vector < VTYPE >::Vector(size_t i ...)
 	}
 	va_end(ap);
 }
+#endif //NEVER
 
 // Assignment operator  - Own element type
 template < class VTYPE >
@@ -201,6 +211,7 @@ void Vector < VTYPE >::free_array() {
 }
 
 
+#    ifdef NEVER
 template < class VTYPE >
 bool Vector < VTYPE >::is_zero(const VTYPE & d)
 {
@@ -209,3 +220,4 @@ bool Vector < VTYPE >::is_zero(const VTYPE & d)
 	else
 		return false;
 }
+#    endif
