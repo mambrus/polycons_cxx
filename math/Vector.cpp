@@ -50,7 +50,7 @@ Vector::Vector(size_t i ...)
 	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = va_arg(ap, int);
+		m_v[j] = va_arg(ap, VTYPE);
 	}
 	va_end(ap);
 }
@@ -64,7 +64,7 @@ Vector & Vector::operator =(const VTYPE i)
 	} else if (m_n == 0) {
 		m_v = (VTYPE *) calloc(1, sizeof(VTYPE));
 	}
-	*(int *)m_v = i;
+	*m_v = i;
 	return *this;
 }
 
