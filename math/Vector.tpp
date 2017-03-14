@@ -1,6 +1,7 @@
 #include "Vector.h"
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
@@ -28,6 +29,12 @@ Vector < VTYPE >::Vector(const Vector & v)
 	}
 }
 
+/* Shallow copy */
+template < class VTYPE >
+static void assign(VTYPE & lhs, const VTYPE & rhs){
+	memcpy(&lhs, &rhs, sizeof(VTYPE));
+}
+
 // Assignment constructor  - integer array
 template < class VTYPE >
 Vector < VTYPE >::Vector(size_t i, VTYPE a[])
@@ -37,10 +44,12 @@ Vector < VTYPE >::Vector(size_t i, VTYPE a[])
 	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = a[j];
+		//m_v[j] = a[j];
+		assign(m_v[j],a[j]);
 	}
 }
 
+#ifdef NEVER
 // Assignment constructor  - Note that the type of the arguments is implicit
 // and needs to be the same as the Vector
 template < class VTYPE >
@@ -48,16 +57,19 @@ Vector < VTYPE >::Vector(size_t i ...)
 {
 	statmng();
 	va_list ap;
+	VTYPE t;
 
 	va_start(ap, i);
 	m_n = i;
 	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = va_arg(ap, VTYPE);
+		t = va_arg(ap, VTYPE);
+		assign(m_v[j],t);
 	}
 	va_end(ap);
 }
+#endif //NEVER
 
 // Assignment operator  - Own element type
 template < class VTYPE >
@@ -184,6 +196,7 @@ int Vector < VTYPE >::instances = 0;
 template < class VTYPE >
 int Vector < VTYPE >::ntotever = 0;
 
+#    ifdef NEVER
 template < class VTYPE >
 bool Vector < VTYPE >::is_zero(const VTYPE & d)
 {
@@ -192,3 +205,4 @@ bool Vector < VTYPE >::is_zero(const VTYPE & d)
 	else
 		return false;
 }
+#    endif
