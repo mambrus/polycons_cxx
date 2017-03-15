@@ -15,7 +15,9 @@ above directory to open the solution-file.
 
 ## Extra tweaks
 
-* Set default project to polygons_cxx
+* Set default project to polygons_cxx as described in tutorial
+* Do not change `Command` setting to `..\bin\polygons_cxx.exe`. I.e. leave as 
+  is to `$(TargetPath)`
 * Set `Properties->Debugging->Environment` to
   `PATH=%PATH%;$(SolutionDir)\math\$(Configuration)`
 

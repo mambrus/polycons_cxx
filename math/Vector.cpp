@@ -19,10 +19,11 @@ Vector::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
-	m_v = (VTYPE *) calloc(v.m_n, sizeof(VTYPE));
+	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
 
 	for (size_t j = 0; j < m_n; j++) {
-		m_v[j] = v.m_v[j];
+		m_v[j] = new VTYPE();
+		*m_v[j] = *v.m_v[j];  //De-refer, force deep copy
 	}
 }
 
@@ -31,10 +32,11 @@ Vector::Vector(size_t i, VTYPE a[])
 {
 	statmng();
 	m_n = i;
-	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
+	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = a[j];
+		m_v[j] = new VTYPE();
+		*m_v[j] = a[j];
 	}
 }
 
@@ -47,10 +49,11 @@ Vector::Vector(size_t i ...)
 
 	va_start(ap, i);
 	m_n = i;
-	m_v = (VTYPE *) calloc(i, sizeof(VTYPE));
+	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = va_arg(ap, VTYPE);
+		m_v[j] = new VTYPE();
+		*m_v[j] = va_arg(ap, VTYPE);
 	}
 	va_end(ap);
 }
@@ -59,12 +62,15 @@ Vector::Vector(size_t i ...)
 Vector & Vector::operator =(const VTYPE i)
 {
 	if (m_n > 1) {
-		free(m_v);
-		m_v = (VTYPE *) calloc(1, sizeof(VTYPE));
+		free_array();
+		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
+		m_v[0] = new VTYPE();
 	} else if (m_n == 0) {
-		m_v = (VTYPE *) calloc(1, sizeof(VTYPE));
+		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
+		m_v[0] = new VTYPE();
 	}
-	*m_v = i;
+	m_n = 1;
+	*m_v[0] = i;
 	return *this;
 }
 
@@ -72,14 +78,15 @@ Vector & Vector::operator =(const VTYPE i)
 Vector & Vector::operator =(const Vector & v)
 {
 	if (m_n > 0 && (v.m_n != m_n)) {
-		free(m_v);
+		free_array();
 	}
 
 	m_n = v.m_n;
-	m_v = (VTYPE *) calloc(v.m_n, sizeof(VTYPE));
+	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
 
 	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] = v.m_v[i];
+		m_v[i] = new VTYPE();
+		*m_v[i] = *v.m_v[i];
 	}
 	return *this;
 }
@@ -93,7 +100,7 @@ VTYPE & Vector::operator [](size_t i) {
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
-	return m_v[i];
+	return *m_v[i];
 }
 
 // Add operator
@@ -108,7 +115,7 @@ const Vector operator +(const Vector lhs, const Vector & v)
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		lhs.m_v[i] += v.m_v[i];
+		*(lhs.m_v[i]) += *(v.m_v[i]);
 	}
 	return lhs;
 }
@@ -125,7 +132,7 @@ const Vector operator -(const Vector lhs, const Vector & v)
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		lhs.m_v[i] -= v.m_v[i];
+		*(lhs.m_v[i]) -= *(v.m_v[i]);
 	}
 	return lhs;
 }
@@ -134,7 +141,7 @@ const Vector operator -(const Vector lhs, const Vector & v)
 const Vector operator *(const Vector lhs, const VTYPE & m)
 {
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		lhs.m_v[i] *= m;
+		*(lhs.m_v[i]) *= m;
 	}
 	return lhs;
 }
@@ -152,7 +159,7 @@ const Vector operator /(const Vector lhs, const VTYPE & d)
 #endif
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		lhs.m_v[i] /= d;
+		*(lhs.m_v[i]) /= d;
 	}
 	return lhs;
 }
@@ -162,13 +169,22 @@ Vector::~Vector()
 {
 	--instances;
 	if (m_n > 0 && m_v) {
-		free(m_v);
+		free_array();
 	}
 }
 
 /* Class stats variables */
 int Vector::instances = 0;
 int Vector::ntotever = 0;
+
+void Vector::free_array() {
+	if (m_n > 0 && m_v) {
+		for (size_t i = 0; i < m_n; i++) {
+			free(*m_v);
+		}
+		free(m_v);
+	}
+}
 
 bool Vector::is_zero(const VTYPE & d)
 {

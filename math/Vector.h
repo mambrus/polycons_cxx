@@ -27,11 +27,12 @@ MATH_EXPORT class Vector {
 	};
 
  private:
-	VTYPE * m_v;
+	VTYPE ** m_v;
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
 	virtual bool is_zero(const VTYPE &);
+	void free_array();
 
  public:
 	MATH_EXPORT Vector();
@@ -63,9 +64,9 @@ MATH_EXPORT class Vector {
 		size_t i;
 		out << "{";
 		for (i = 0; i < v.m_n - 1; i++) {
-			out << v.m_v[i] << ",";
+			out << *(v.m_v[i]) << ",";
 		};
-		out << v.m_v[i] << "}";
+		out << *(v.m_v[i]) << "}";
 		return out;
 	}
 
