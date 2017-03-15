@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
 		cout << "B:" << B << endl;
 	}
 
-	cout << Vector::stats(cout);
+	//cout << Vector::stats(cout);
 	cout << endl;
 /*
 	hash<int> myobject;
