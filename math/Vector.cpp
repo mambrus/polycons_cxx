@@ -168,9 +168,7 @@ const Vector operator /(const Vector lhs, const T & d)
 Vector::~Vector()
 {
 	--instances;
-	if (m_n > 0 && m_v) {
-		free_array();
-	}
+	free_array();
 }
 
 /* Class stats variables */
@@ -180,7 +178,7 @@ int Vector::ntotever = 0;
 void Vector::free_array() {
 	if (m_n > 0 && m_v) {
 		for (size_t i = 0; i < m_n; i++) {
-			free(*m_v);
+			free(m_v[i]);
 		}
 		free(m_v);
 	}
