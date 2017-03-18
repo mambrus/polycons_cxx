@@ -19,23 +19,23 @@ Vector::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
-	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
+	m_v = (T **) calloc(v.m_n, sizeof(T*));
 
 	for (size_t j = 0; j < m_n; j++) {
-		m_v[j] = new VTYPE();
+		m_v[j] = new T();
 		*m_v[j] = *v.m_v[j];  //De-refer, force deep copy
 	}
 }
 
 // Assignment constructor  - integer array
-Vector::Vector(size_t i, VTYPE a[])
+Vector::Vector(size_t i, T a[])
 {
 	statmng();
 	m_n = i;
-	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
+	m_v = (T **) calloc(i, sizeof(T*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = new VTYPE();
+		m_v[j] = new T();
 		*m_v[j] = a[j];
 	}
 }
@@ -49,25 +49,25 @@ Vector::Vector(size_t i ...)
 
 	va_start(ap, i);
 	m_n = i;
-	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
+	m_v = (T **) calloc(i, sizeof(T*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = new VTYPE();
-		*m_v[j] = va_arg(ap, VTYPE);
+		m_v[j] = new T();
+		*m_v[j] = va_arg(ap, T);
 	}
 	va_end(ap);
 }
 
 // Assignment operator  - Own element type
-Vector & Vector::operator =(const VTYPE i)
+Vector & Vector::operator =(const T i)
 {
 	if (m_n > 1) {
 		free_array();
-		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
-		m_v[0] = new VTYPE();
+		m_v = (T **)calloc(1, sizeof(T*));
+		m_v[0] = new T();
 	} else if (m_n == 0) {
-		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
-		m_v[0] = new VTYPE();
+		m_v = (T **)calloc(1, sizeof(T*));
+		m_v[0] = new T();
 	}
 	m_n = 1;
 	*m_v[0] = i;
@@ -82,17 +82,17 @@ Vector & Vector::operator =(const Vector & v)
 	}
 
 	m_n = v.m_n;
-	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
+	m_v = (T **) calloc(v.m_n, sizeof(T*));
 
 	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] = new VTYPE();
+		m_v[i] = new T();
 		*m_v[i] = *v.m_v[i];
 	}
 	return *this;
 }
 
 // Index operator
-VTYPE & Vector::operator [](size_t i) {
+T & Vector::operator [](size_t i) {
 	if (i > (m_n - 1)) {
 		std::ostringstream s;
 		s << "Index [" << i <<
@@ -138,7 +138,7 @@ const Vector operator -(const Vector lhs, const Vector & v)
 }
 
 // Multiply operator
-const Vector operator *(const Vector lhs, const VTYPE & m)
+const Vector operator *(const Vector lhs, const T & m)
 {
 	for (size_t i = 0; i < lhs.m_n; i++) {
 		*(lhs.m_v[i]) *= m;
@@ -147,7 +147,7 @@ const Vector operator *(const Vector lhs, const VTYPE & m)
 }
 
 // Division operator
-const Vector operator /(const Vector lhs, const VTYPE & d)
+const Vector operator /(const Vector lhs, const T & d)
 {
 #ifdef NEVER
 	if (lhs.is_zero(d)) {
@@ -186,7 +186,7 @@ void Vector::free_array() {
 	}
 }
 
-bool Vector::is_zero(const VTYPE & d)
+bool Vector::is_zero(const T & d)
 {
 	if (d == 0)
 		return true;
