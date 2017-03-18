@@ -8,23 +8,7 @@
 
 #include<iostream>
 #include<map>
-/*
-using namespace std;
 
-template < class T > class hash {
- private:
-	map < string, T > _map;
- public:
-	T & operator[](string x);
-	friend ostream & operator<<(ostream & out, const hash < T > &rhs) {
-		return out << "test";
-	}
-};
-
-template < class T > T & hash < T >::operator[](string x) {
-	return _map[x];
-}
-*/
 int main(int argc, char *argv[])
 {
 
@@ -214,11 +198,5 @@ int main(int argc, char *argv[])
 
 	cout << Vector < int >::stats(cout);
 	cout << endl;
-/*
-	hash<int> myobject;
-	myobject["a"] = 1;
-	cout << myobject["a"] << endl;
-	cout << myobject << endl;
-*/
 	return 0;
 }

@@ -30,12 +30,6 @@ Vector < T >::Vector(const Vector & v)
 	}
 }
 
-/* Shallow copy */
-template < class T >
-static void assign(T & lhs, const T & rhs){
-	memcpy(&lhs, &rhs, sizeof(T));
-}
-
 // Assignment constructor  - integer array
 template < class T >
 Vector < T >::Vector(size_t i, T a[])
@@ -183,6 +177,16 @@ const Vector operator /(const Vector lhs, const T & d)
 }
 #endif				//NO_LINALGEBRA
 
+template < class T >
+void Vector < T >::free_array() {
+	if (m_n > 0 && m_v) {
+		for (size_t i = 0; i < m_n; i++) {
+			free(m_v[i]);
+		}
+		free(m_v);
+	}
+}
+
 // Destructor.
 template < class T >
 Vector < T >::~Vector()
@@ -197,16 +201,6 @@ template < class T >
 int Vector < T >::instances = 0;
 template < class T >
 int Vector < T >::ntotever = 0;
-
-template < class T >
-void Vector < T >::free_array() {
-	if (m_n > 0 && m_v) {
-		for (size_t i = 0; i < m_n; i++) {
-			free(m_v[i]);
-		}
-		free(m_v);
-	}
-}
 
 
 #    ifdef NEVER
