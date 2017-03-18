@@ -11,7 +11,7 @@ using namespace std;
 #    define NELEM( A ) \
 	( sizeof(A) / sizeof(A[0]) )
 
-MATH_EXPORT template < class VTYPE > class Vector {
+MATH_EXPORT template < class T > class Vector {
 
  protected:
 	//Sub-optimal ways of keeping track of statistics
@@ -24,19 +24,19 @@ MATH_EXPORT template < class VTYPE > class Vector {
 	};
 
  private:
-	VTYPE ** m_v;
+	T ** m_v;
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
 #    ifdef NEVER
-	virtual bool is_zero(const VTYPE &);
+	virtual bool is_zero(const T &);
 #	endif
 
 	void free_array();
 
  public:
 	MATH_EXPORT Vector();
-	MATH_EXPORT Vector(size_t, VTYPE[]);
+	MATH_EXPORT Vector(size_t, T[]);
 #    ifdef NEVER
 	MATH_EXPORT Vector(size_t ...);
 #	endif
@@ -46,11 +46,11 @@ MATH_EXPORT template < class VTYPE > class Vector {
 
 	// Operators
 	// Assignment
-	MATH_EXPORT virtual Vector & operator =(const VTYPE i);
+	MATH_EXPORT virtual Vector & operator =(const T i);
 	MATH_EXPORT virtual Vector & operator =(const Vector & v);
 
 	// Index operator
-	MATH_EXPORT virtual VTYPE & operator[] (size_t i);
+	MATH_EXPORT virtual T & operator[] (size_t i);
 
 #    ifdef NO_LINALGEBRA
 	//Linear algebra operators
@@ -59,9 +59,9 @@ MATH_EXPORT template < class VTYPE > class Vector {
 	MATH_EXPORT const friend Vector operator -(const Vector lhs,
 						   const Vector & v);
 	MATH_EXPORT const friend Vector operator *(const Vector lhs,
-						   const VTYPE & m);
+						   const T & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
-						   const VTYPE & d);
+						   const T & d);
 #    endif			//NO_LINALGEBRA
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {

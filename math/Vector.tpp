@@ -7,8 +7,8 @@
 #include <sstream>
 
 // Default constructor
-template < class VTYPE >
-Vector < VTYPE >::Vector()
+template < class T >
+Vector < T >::Vector()
 {
 	statmng();
 	m_n = 0;
@@ -17,35 +17,35 @@ Vector < VTYPE >::Vector()
 // Copy constructor. Run-time invokes when ever an intermediate object is
 // needed. Typically part of an expression, i.e. temporary value of
 // sub-expression is created using this constructor.
-template < class VTYPE >
-Vector < VTYPE >::Vector(const Vector & v)
+template < class T >
+Vector < T >::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
-	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
+	m_v = (T **) calloc(v.m_n, sizeof(T*));
 
 	for (size_t j = 0; j < m_n; j++) {
-		m_v[j] = new VTYPE();
+		m_v[j] = new T();
 		*m_v[j] = *v.m_v[j];  //De-refer, force deep copy
 	}
 }
 
 /* Shallow copy */
-template < class VTYPE >
-static void assign(VTYPE & lhs, const VTYPE & rhs){
-	memcpy(&lhs, &rhs, sizeof(VTYPE));
+template < class T >
+static void assign(T & lhs, const T & rhs){
+	memcpy(&lhs, &rhs, sizeof(T));
 }
 
 // Assignment constructor  - integer array
-template < class VTYPE >
-Vector < VTYPE >::Vector(size_t i, VTYPE a[])
+template < class T >
+Vector < T >::Vector(size_t i, T a[])
 {
 	statmng();
 	m_n = i;
-	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
+	m_v = (T **) calloc(i, sizeof(T*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = new VTYPE();
+		m_v[j] = new T();
 		*m_v[j] = a[j];
 	}
 }
@@ -53,36 +53,36 @@ Vector < VTYPE >::Vector(size_t i, VTYPE a[])
 #ifdef NEVER
 // Assignment constructor  - Note that the type of the arguments is implicit
 // and needs to be the same as the Vector
-template < class VTYPE >
-Vector < VTYPE >::Vector(size_t i ...)
+template < class T >
+Vector < T >::Vector(size_t i ...)
 {
 	statmng();
 	va_list ap;
-	VTYPE t;
+	T t;
 
 	va_start(ap, i);
 	m_n = i;
-	m_v = (VTYPE **) calloc(i, sizeof(VTYPE*));
+	m_v = (T **) calloc(i, sizeof(T*));
 
 	for (size_t j = 0; j < i; j++) {
-		m_v[j] = new VTYPE();
-		*m_v[j] = va_arg(ap, VTYPE);
+		m_v[j] = new T();
+		*m_v[j] = va_arg(ap, T);
 	}
 	va_end(ap);
 }
 #endif //NEVER
 
 // Assignment operator  - Own element type
-template < class VTYPE >
-Vector< VTYPE > & Vector < VTYPE >::operator =(const VTYPE i)
+template < class T >
+Vector< T > & Vector < T >::operator =(const T i)
 {
 	if (m_n > 1) {
 		free_array();
-		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
-		m_v[0] = new VTYPE();
+		m_v = (T **)calloc(1, sizeof(T*));
+		m_v[0] = new T();
 	} else if (m_n == 0) {
-		m_v = (VTYPE **)calloc(1, sizeof(VTYPE*));
-		m_v[0] = new VTYPE();
+		m_v = (T **)calloc(1, sizeof(T*));
+		m_v[0] = new T();
 	}
 	m_n = 1;
 	*m_v[0] = i;
@@ -90,26 +90,26 @@ Vector< VTYPE > & Vector < VTYPE >::operator =(const VTYPE i)
 }
 
 // Copy operator (see also copy constructor)
-template < class VTYPE >
-Vector< VTYPE > & Vector < VTYPE >::operator =(const Vector & v)
+template < class T >
+Vector< T > & Vector < T >::operator =(const Vector & v)
 {
 	if (m_n > 0 && (v.m_n != m_n)) {
 		free_array();
 	}
 
 	m_n = v.m_n;
-	m_v = (VTYPE **) calloc(v.m_n, sizeof(VTYPE*));
+	m_v = (T **) calloc(v.m_n, sizeof(T*));
 
 	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] = new VTYPE();
+		m_v[i] = new T();
 		*m_v[i] = *v.m_v[i];
 	}
 	return *this;
 }
 
 // Index operator
-template < class VTYPE >
-VTYPE & Vector < VTYPE >::operator [](size_t i) {
+template < class T >
+T & Vector < T >::operator [](size_t i) {
 	if (i > (m_n - 1)) {
 		std::ostringstream s;
 		s << "Index [" << i <<
@@ -156,7 +156,7 @@ const Vector operator -(const Vector lhs, const Vector & v)
 }
 
 // Multiply operator
-const Vector operator *(const Vector lhs, const VTYPE & m)
+const Vector operator *(const Vector lhs, const T & m)
 {
 	for (size_t i = 0; i < lhs.m_n; i++) {
 		*(lhs.m_v[i]) *= m;
@@ -165,7 +165,7 @@ const Vector operator *(const Vector lhs, const VTYPE & m)
 }
 
 // Division operator
-const Vector operator /(const Vector lhs, const VTYPE & d)
+const Vector operator /(const Vector lhs, const T & d)
 {
 #    ifdef NEVER
 	if (lhs.is_zero(d)) {
@@ -184,8 +184,8 @@ const Vector operator /(const Vector lhs, const VTYPE & d)
 #endif				//NO_LINALGEBRA
 
 // Destructor.
-template < class VTYPE >
-Vector < VTYPE >::~Vector()
+template < class T >
+Vector < T >::~Vector()
 {
 	--instances;
 	if (m_n > 0 && m_v) {
@@ -195,13 +195,13 @@ Vector < VTYPE >::~Vector()
 
 /* Class stats variables */
 // Below is probably not such a good idea...
-template < class VTYPE >
-int Vector < VTYPE >::instances = 0;
-template < class VTYPE >
-int Vector < VTYPE >::ntotever = 0;
+template < class T >
+int Vector < T >::instances = 0;
+template < class T >
+int Vector < T >::ntotever = 0;
 
-template < class VTYPE >
-void Vector < VTYPE >::free_array() {
+template < class T >
+void Vector < T >::free_array() {
 	if (m_n > 0 && m_v) {
 		for (size_t i = 0; i < m_n; i++) {
 			free(*m_v);
@@ -212,8 +212,8 @@ void Vector < VTYPE >::free_array() {
 
 
 #    ifdef NEVER
-template < class VTYPE >
-bool Vector < VTYPE >::is_zero(const VTYPE & d)
+template < class T >
+bool Vector < T >::is_zero(const T & d)
 {
 	if (d == 0)
 		return true;
