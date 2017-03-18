@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Make wrapper that always get's current environment setting is available
+
+if [ -f .env ]; then
+	source $(pwd)/.env
+fi
+
+# Call system kdbg with environment
+/usr/bin/kdbg "$@"
