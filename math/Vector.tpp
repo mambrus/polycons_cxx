@@ -44,7 +44,7 @@ Vector < T >::Vector(size_t i, T a[])
 	}
 }
 
-#ifdef NEVER
+//#ifdef NEVER
 // Assignment constructor  - Note that the type of the arguments is implicit
 // and needs to be the same as the Vector
 template < class T >
@@ -64,7 +64,7 @@ Vector < T >::Vector(size_t i ...)
 	}
 	va_end(ap);
 }
-#endif //NEVER
+//#endif //NEVER
 
 // Assignment operator  - Own element type
 template < class T >
@@ -85,7 +85,7 @@ Vector< T > & Vector < T >::operator =(const T i)
 
 // Copy operator (see also copy constructor)
 template < class T >
-Vector< T > & Vector < T >::operator =(const Vector & v)
+Vector< T > & Vector < T >::operator =(const Vector<T> & v)
 {
 	if (m_n > 0 && (v.m_n != m_n)) {
 		free_array();
@@ -114,41 +114,43 @@ T & Vector < T >::operator [](size_t i) {
 	return *(m_v[i]);
 }
 
-#ifdef NO_LINALGEBRA
 // Add operator
-const Vector operator +(const Vector lhs, const Vector & v)
+template < class T >
+const Vector< T > operator +(const Vector< T > lhs, const Vector< T > & rhs)
 {
-	if (lhs.m_n != v.m_n) {
+	if (lhs.m_n != rhs.m_n) {
 		std::ostringstream s;
 		s << "Vectors must have the same dimension to be added. [" <<
-		    (lhs.m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		    (lhs.m_n - 1) << "] != [" << (rhs.m_n - 1) << "]";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		*(lhs.m_v[i]) += *(v.m_v[i]);
+		*(lhs.m_v[i]) += *(rhs.m_v[i]);
 	}
 	return lhs;
 }
 
 // Subtract operator
-const Vector operator -(const Vector lhs, const Vector & v)
+template < class T >
+const Vector< T > operator -(const Vector< T > lhs, const Vector< T > & rhs)
 {
-	if (lhs.m_n != v.m_n) {
+	if (lhs.m_n != rhs.m_n) {
 		std::ostringstream s;
-		s << "Vectors must have the same dimension to be added. [" <<
-		    (lhs.m_n - 1) << "] != [" << (v.m_n - 1) << "]";
+		s << "Vectors must have the same dimension to be subtracted. [" <<
+		    (lhs.m_n - 1) << "] != [" << (rhs.m_n - 1) << "]";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		*(lhs.m_v[i]) -= *(v.m_v[i]);
+		*(lhs.m_v[i]) -= *(rhs.m_v[i]);
 	}
 	return lhs;
 }
 
+#ifdef NEVER
 // Multiply operator
 const Vector operator *(const Vector lhs, const T & m)
 {
@@ -161,21 +163,19 @@ const Vector operator *(const Vector lhs, const T & m)
 // Division operator
 const Vector operator /(const Vector lhs, const T & d)
 {
-#    ifdef NEVER
 	if (lhs.is_zero(d)) {
 		std::ostringstream s;
 		s << "Vector division would be by zero! (avoided)";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
-#    endif
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
 		*(lhs.m_v[i]) /= d;
 	}
 	return lhs;
 }
-#endif				//NO_LINALGEBRA
+#endif				//NEVER
 
 template < class T >
 void Vector < T >::free_array() {
@@ -203,13 +203,9 @@ template < class T >
 int Vector < T >::ntotever = 0;
 
 
-#    ifdef NEVER
+/* NOTE Stubbed TBD !!!*/
 template < class T >
 bool Vector < T >::is_zero(const T & d)
 {
-	if (d == 0)
-		return true;
-	else
-		return false;
+	return false;
 }
-#    endif

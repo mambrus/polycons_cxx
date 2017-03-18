@@ -28,18 +28,14 @@ MATH_EXPORT template < class T > class Vector {
 	size_t m_n;
 	int m_uid;		/* Unique id. Used for debugging DTOR/CTOR order of
 				   tmp/stack instances. */
-#    ifdef NEVER
 	virtual bool is_zero(const T &);
-#	endif
 
 	void free_array();
 
  public:
 	MATH_EXPORT Vector();
 	MATH_EXPORT Vector(size_t, T[]);
-#    ifdef NEVER
 	MATH_EXPORT Vector(size_t ...);
-#	endif
 
 	//Copy constructor
 	MATH_EXPORT Vector(const Vector & v);
@@ -52,17 +48,19 @@ MATH_EXPORT template < class T > class Vector {
 	// Index operator
 	MATH_EXPORT virtual T & operator[] (size_t i);
 
-#    ifdef NO_LINALGEBRA
 	//Linear algebra operators
-	MATH_EXPORT const friend Vector operator +(const Vector lhs,
-						   const Vector & v);
-	MATH_EXPORT const friend Vector operator -(const Vector lhs,
-						   const Vector & v);
+	template < class Y >
+	MATH_EXPORT const friend Vector< Y > operator +(const Vector< Y > lhs,
+						   const Vector< Y > & v);
+	template < class Y >
+	MATH_EXPORT const friend Vector< Y > operator -(const Vector< Y > lhs,
+						   const Vector< Y > & v);
+#ifdef NEVER
 	MATH_EXPORT const friend Vector operator *(const Vector lhs,
 						   const T & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
 						   const T & d);
-#    endif			//NO_LINALGEBRA
+#endif					//NEVER
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;

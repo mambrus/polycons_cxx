@@ -31,6 +31,8 @@
 	cout << endl; \
 }
 
+int glob_gdb_1 = 0;
+
 int main(int argc, char *argv[])
 {
 	struct mallinfo before, after;
@@ -255,17 +257,17 @@ int main(int argc, char *argv[])
 		}
 #endif				//NEVER
 
-#ifdef NO_LINALGEBRA
 		// ===========================================
 		cout << "Linear algebra operators (+/-):" << endl;
 		// ===========================================
 		{
+			glob_gdb_1 = 1;
 			Vector < int >A(4, 11, 12, 13, 14);
 			Vector < int >B(4, 21, 22, 23, 24);
 			cout << "A:" << A << endl;
 			cout << "B:" << B << endl;
 			Vector < int >C = A + B;
-			Vector < int >D = B - C;
+			Vector < int >D = B - (A + B);
 			cout << "C:" << C << endl;
 			cout << "D:" << D << endl;
 			cout << "Source variables are now NOT tainted" << endl;
@@ -273,6 +275,7 @@ int main(int argc, char *argv[])
 			cout << "B:" << B << endl;
 		}
 
+#ifdef NO_LINALGEBRA
 		// ===========================================
 		cout << "Linear algebra operators (mul/div):" << endl;
 		// ===========================================
