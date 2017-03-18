@@ -46,3 +46,10 @@ fun! <SID>StartDebugging()
 endfunction
 
 nmap <silent> <leader>d :Kdbg<CR>
+
+
+" Settings tunable via env-vars
+" =============================
+if "$VIM_COLORSCHEME" != "X"
+	:execute $VIM_COLORSCHEME
+endif
