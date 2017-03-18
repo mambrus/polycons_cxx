@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <malloc.h>
 
 #include <simple/SimpleFunctions.h>
 #include <advanced/AdvancedFunctions.h>
@@ -9,8 +10,38 @@
 #include<iostream>
 #include<map>
 
+#define PVECTOR_STATS { \
+	cout << "Vector < int >:"; \
+	cout << Vector < int >::stats(cout) << endl; \
+	cout << endl; \
+	cout << "Vector < float >:"; \
+	cout << Vector < float >::stats(cout) << endl; \
+	cout << endl; \
+	cout << "Vector < double >:"; \
+	cout << Vector < double >::stats(cout) << endl; \
+	cout << endl; \
+	cout << "Vector < Vector <int > >:"; \
+	cout << Vector < Vector < int > >::stats(cout) << endl; \
+	cout << endl; \
+	cout << "Vector < Vector <float > >:"; \
+	cout << Vector < Vector < float > >::stats(cout) << endl; \
+	cout << endl; \
+	cout << "Vector < Vector <double > >:"; \
+	cout << Vector < Vector < double > >::stats(cout) << endl; \
+	cout << endl; \
+}
+
 int main(int argc, char *argv[])
 {
+	struct mallinfo before, after;
+	int mused;
+
+	before = mallinfo();
+
+	after = mallinfo();
+	mused = (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
+	printf("Allocated memory: %d \n", mused);
+
 	{
 		// Define a 2-dimensional integer vector (matrix) and test index operators
 		// on it.
@@ -261,8 +292,20 @@ int main(int argc, char *argv[])
 
 #endif				//NO_LINALGEBRA
 
-		cout << Vector < int >::stats(cout);
-		cout << endl;
+		printf("=================================================\n");
+		printf("Printout of static Vector-stats before last scope\n");
+		printf("=================================================\n");
+		PVECTOR_STATS;
+
 	}
+	printf("=================================================\n");
+	printf("Printout of static Vector-stats after last scope\n");
+	printf("=================================================\n");
+	PVECTOR_STATS;
+
+	after = mallinfo();
+	mused = (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
+	printf("Allocated memory: %d \n", mused);
+
 	return 0;
 }
