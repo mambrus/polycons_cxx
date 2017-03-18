@@ -62,10 +62,14 @@ int main(int argc, char *argv[])
 		cout << "Constructor and assignments <int>:" << endl;
 		// ===========================================
 		Vector < int >A(NELEM(a), a);
+		cout << "1:st assignment constructor (array):" << endl;
+		cout << A << endl << endl;
 		Vector < int >B;
 		B = A;
 
 		Vector < int >C(4, 21, 22, 23, 24);
+		cout << "2:nd assignment constructor (va_arg):" << endl;
+		cout << C << endl << endl;
 		Vector < int >D = C;
 
 		cout << "A:" << A << endl

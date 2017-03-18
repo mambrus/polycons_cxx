@@ -26,7 +26,7 @@ Vector < T >::Vector(const Vector & v)
 
 	for (size_t j = 0; j < m_n; j++) {
 		m_v[j] = new T();
-		*m_v[j] = *v.m_v[j];  //De-refer, force deep copy
+		*(m_v[j]) = *v.m_v[j];  //De-refer, force deep copy
 	}
 }
 
@@ -46,7 +46,7 @@ Vector < T >::Vector(size_t i, T a[])
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
-		*m_v[j] = a[j];
+		*(m_v[j]) = a[j];
 	}
 }
 
@@ -66,7 +66,7 @@ Vector < T >::Vector(size_t i ...)
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
-		*m_v[j] = va_arg(ap, T);
+		*(m_v[j]) = va_arg(ap, T);
 	}
 	va_end(ap);
 }
@@ -85,7 +85,7 @@ Vector< T > & Vector < T >::operator =(const T i)
 		m_v[0] = new T();
 	}
 	m_n = 1;
-	*m_v[0] = i;
+	*(m_v[0]) = i;
 	return *this;
 }
 
@@ -102,7 +102,7 @@ Vector< T > & Vector < T >::operator =(const Vector & v)
 
 	for (size_t i = 0; i < m_n; i++) {
 		m_v[i] = new T();
-		*m_v[i] = *v.m_v[i];
+		*(m_v[i]) = *v.m_v[i];
 	}
 	return *this;
 }
@@ -117,7 +117,7 @@ T & Vector < T >::operator [](size_t i) {
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
-	return *m_v[i];
+	return *(m_v[i]);
 }
 
 #ifdef NO_LINALGEBRA
@@ -188,9 +188,7 @@ template < class T >
 Vector < T >::~Vector()
 {
 	--instances;
-	if (m_n > 0 && m_v) {
-		free_array();
-	}
+	free_array();
 }
 
 /* Class stats variables */
@@ -204,7 +202,7 @@ template < class T >
 void Vector < T >::free_array() {
 	if (m_n > 0 && m_v) {
 		for (size_t i = 0; i < m_n; i++) {
-			free(*m_v);
+			free(m_v[i]);
 		}
 		free(m_v);
 	}
