@@ -23,7 +23,7 @@ Vector::Vector(const Vector & v)
 
 	for (size_t j = 0; j < m_n; j++) {
 		m_v[j] = new T();
-		*m_v[j] = *v.m_v[j];  //De-refer, force deep copy
+		*(m_v[j]) = *v.m_v[j];  //De-refer, force deep copy
 	}
 }
 
@@ -36,7 +36,7 @@ Vector::Vector(size_t i, T a[])
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
-		*m_v[j] = a[j];
+		*(m_v[j]) = a[j];
 	}
 }
 
@@ -53,7 +53,7 @@ Vector::Vector(size_t i ...)
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
-		*m_v[j] = va_arg(ap, T);
+		*(m_v[j]) = va_arg(ap, T);
 	}
 	va_end(ap);
 }
@@ -70,7 +70,7 @@ Vector & Vector::operator =(const T i)
 		m_v[0] = new T();
 	}
 	m_n = 1;
-	*m_v[0] = i;
+	*(m_v[0]) = i;
 	return *this;
 }
 
@@ -86,7 +86,7 @@ Vector & Vector::operator =(const Vector & v)
 
 	for (size_t i = 0; i < m_n; i++) {
 		m_v[i] = new T();
-		*m_v[i] = *v.m_v[i];
+		*(m_v[i]) = *v.m_v[i];
 	}
 	return *this;
 }
@@ -100,7 +100,7 @@ T & Vector::operator [](size_t i) {
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
-	return *m_v[i];
+	return *(m_v[i]);
 }
 
 // Add operator
