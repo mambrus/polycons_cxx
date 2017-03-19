@@ -33,6 +33,28 @@
 
 int glob_gdb_1 = 0;
 
+// Helper function until better constructors / static casting methods exists
+template < class T >
+    Vector < Vector < T > >MatrixInitialize(const Vector < Vector < T > >&me,
+					    T baseval)
+{
+	Vector < Vector < T > >R = me;
+	int dim1 = R.Length();
+	int dim2 = R[0].Length();
+	T I[dim1] = { 0 };
+
+	int i, j;
+
+	for (j = 0; j < dim1; j++) {
+		for (i = 0; i < dim2; i++) {
+			I[i] = baseval + (100 * j + i);
+		}
+		R[j] = I;
+	}
+
+	return R;
+}
+
 int main(int argc, char *argv[])
 {
 	struct mallinfo before, after;
@@ -41,7 +63,8 @@ int main(int argc, char *argv[])
 	before = mallinfo();
 
 	after = mallinfo();
-	mused = (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
+	mused =
+	    (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
 	printf("Allocated memory: %d \n", mused);
 
 	{
@@ -50,34 +73,18 @@ int main(int argc, char *argv[])
 		cout << endl;
 		{
 			int i, j;
-			int a[] = {
-				11, 12, 13, 14
-			};
-			int b[] = {
-				21, 22, 23, 24
-			};
-			int c[] = {
-				31, 32, 33, 34
-			};
-			int d[] = {
-				41, 42, 43, 44
-			};
-			Vector < int >A(4, a);
-			Vector < int >B(4, b);
-			Vector < int >C(4, c);
-
-			// Temporary helper variable until we have better either CTRS or
-			// static casters:
-			Vector < int >m[] = {
-				A, B, C
-			};
+			int dim1 = 3, dim2 = 4;
 
 			// Create the matrix
-			Vector < Vector < int > >matrix(3, m);
+			printf("Instantiating matrix\n");
+			Vector < Vector < int > >matrix(dim1,
+						       Vector < int >(dim2));
+			printf("Initializing matrix\n");
+			matrix = MatrixInitialize < int >(matrix, 11);
 
 			// Print matrix out in various forms and using various methods
-			for (i = 0; i < 3; i++) {
-				for (j = 0; j < 4; j++) {
+			for (i = 0; i < dim1; i++) {
+				for (j = 0; j < dim2; j++) {
 					cout << "[" << i << "." << j << "] : ";
 					cout << matrix[i][j] << endl;
 				}
@@ -88,39 +95,23 @@ int main(int argc, char *argv[])
 			cout << endl;
 		}
 
-		// Define a 2-dimensional float vector (matrix) and test index operators
+		// Define a 2-dimensional double vector (matrix) and test index operators
 		// on it.
 		cout << endl;
 		{
-			float i, j;
-			float a[] = {
-				1.1, 1.2, 1.3, 1.4
-			};
-			float b[] = {
-				2.1, 2.2, 2.3, 2.4
-			};
-			float c[] = {
-				3.1, 3.2, 3.3, 3.4
-			};
-			float d[] = {
-				4.1, 4.2, 4.3, 4.4
-			};
-			Vector < float >A(4, a);
-			Vector < float >B(4, b);
-			Vector < float >C(4, c);
-
-			// Temporary helper variable until we have better either CTRS or
-			// static casters:
-			Vector < float >m[] = {
-				A, B, C
-			};
+			int i, j;
+			int dim1 = 3, dim2 = 4;
 
 			// Create the matrix
-			Vector < Vector < float > >matrix(3, m);
+			printf("Instantiating matrix\n");
+			Vector < Vector < double > >matrix(dim1,
+							  Vector < double >(dim2));
+			printf("Initializing matrix\n");
+			matrix = MatrixInitialize < double >(matrix, 1.1);
 
-			// Prfloat matrix out in various forms and using various methods
-			for (i = 0; i < 3; i++) {
-				for (j = 0; j < 4; j++) {
+			// Print matrix out in various forms and using various methods
+			for (i = 0; i < dim1; i++) {
+				for (j = 0; j < dim2; j++) {
 					cout << "[" << i << "." << j << "] : ";
 					cout << matrix[i][j] << endl;
 				}
@@ -262,8 +253,12 @@ int main(int argc, char *argv[])
 		// ===========================================
 		{
 			glob_gdb_1 = 1;
-			Vector < int >A(4, 11, 12, 13, 14);
-			Vector < int >B(4, 21, 22, 23, 24);
+			Vector < int >A(4);
+			int a[] = { 11, 12, 13, 14 };
+			A = a;
+			Vector < int >B(4);
+			int b[] = { 21, 22, 23, 24 };
+			B = b;
 			cout << "A:" << A << endl;
 			cout << "B:" << B << endl;
 			Vector < int >C = A + B;
@@ -307,7 +302,8 @@ int main(int argc, char *argv[])
 	PVECTOR_STATS;
 
 	after = mallinfo();
-	mused = (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
+	mused =
+	    (after.uordblks - before.uordblks) + (after.hblkhd - before.hblkhd);
 	printf("Allocated memory: %d \n", mused);
 
 	return 0;

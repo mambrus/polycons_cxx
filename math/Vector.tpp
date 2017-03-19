@@ -1,14 +1,11 @@
 #include "Vector.h"
 #include <stdlib.h>
-#include <stdarg.h>
 #include <string.h>
 #include <iostream>
 #include <stdexcept>
 #include <sstream>
-
 // Default constructor
-template < class T >
-Vector < T >::Vector()
+template < class T > Vector < T >::Vector()
 {
 	statmng();
 	m_n = 0;
@@ -17,26 +14,24 @@ Vector < T >::Vector()
 // Copy constructor. Run-time invokes when ever an intermediate object is
 // needed. Typically part of an expression, i.e. temporary value of
 // sub-expression is created using this constructor.
-template < class T >
-Vector < T >::Vector(const Vector & v)
+template < class T > Vector < T >::Vector(const Vector & v)
 {
 	statmng();
 	m_n = v.m_n;
-	m_v = (T **) calloc(v.m_n, sizeof(T*));
+	m_v = (T **) calloc(v.m_n, sizeof(T *));
 
 	for (size_t j = 0; j < m_n; j++) {
 		m_v[j] = new T();
-		*(m_v[j]) = *v.m_v[j];  //De-refer, force deep copy
+		*(m_v[j]) = *v.m_v[j];	//De-refer, force deep copy
 	}
 }
 
-// Assignment constructor  - integer array
-template < class T >
-Vector < T >::Vector(size_t i, T a[])
+// Assignment constructor
+template < class T > Vector < T >::Vector(size_t i, T a[])
 {
 	statmng();
 	m_n = i;
-	m_v = (T **) calloc(i, sizeof(T*));
+	m_v = (T **) calloc(i, sizeof(T *));
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
@@ -44,38 +39,46 @@ Vector < T >::Vector(size_t i, T a[])
 	}
 }
 
-//#ifdef NEVER
-// Assignment constructor  - Note that the type of the arguments is implicit
-// and needs to be the same as the Vector
-template < class T >
-Vector < T >::Vector(size_t i ...)
+// Allocation constructor
+// Just allocates the memory and sets sizes.
+template < class T > Vector < T >::Vector(size_t i)
 {
 	statmng();
-	va_list ap;
 	T t;
 
-	va_start(ap, i);
 	m_n = i;
-	m_v = (T **) calloc(i, sizeof(T*));
+	m_v = (T **) calloc(i, sizeof(T *));
 
 	for (size_t j = 0; j < i; j++) {
 		m_v[j] = new T();
-		*(m_v[j]) = va_arg(ap, T);
 	}
-	va_end(ap);
 }
-//#endif //NEVER
+
+// Allocation constructor
+// Just allocates the memory and initializes with type-data.
+template < class T > Vector < T >::Vector(size_t i, T a)
+{
+	statmng();
+	T t;
+
+	m_n = i;
+	m_v = (T **) calloc(i, sizeof(T *));
+
+	for (size_t j = 0; j < i; j++) {
+		m_v[j] = new T();
+		*(m_v[j]) = a;
+	}
+}
 
 // Assignment operator  - Own element type
-template < class T >
-Vector< T > & Vector < T >::operator =(const T i)
+template < class T > Vector < T > &Vector < T >::operator =(const T i)
 {
 	if (m_n > 1) {
 		free_array();
-		m_v = (T **)calloc(1, sizeof(T*));
+		m_v = (T **) calloc(1, sizeof(T *));
 		m_v[0] = new T();
 	} else if (m_n == 0) {
-		m_v = (T **)calloc(1, sizeof(T*));
+		m_v = (T **) calloc(1, sizeof(T *));
 		m_v[0] = new T();
 	}
 	m_n = 1;
@@ -83,27 +86,55 @@ Vector< T > & Vector < T >::operator =(const T i)
 	return *this;
 }
 
-// Copy operator (see also copy constructor)
-template < class T >
-Vector< T > & Vector < T >::operator =(const Vector<T> & v)
+// Assignment operator  - Array of own element type
+// Size is *this, *this must have been instantiated with a size.
+template < class T > Vector < T > &Vector < T >::operator =(const T a[])
 {
-	if (m_n > 0 && (v.m_n != m_n)) {
-		free_array();
+	if (m_n == 0) {
+		std::ostringstream s;
+		s << "Vector::Length() must not be zero";
+		std::string eMsg(s.str());
+		throw std::invalid_argument(eMsg);
 	}
-
-	m_n = v.m_n;
-	m_v = (T **) calloc(v.m_n, sizeof(T*));
-
 	for (size_t i = 0; i < m_n; i++) {
-		m_v[i] = new T();
-		*(m_v[i]) = *v.m_v[i];
+		*(m_v[i]) = a[i];
 	}
 	return *this;
 }
 
-// Index operator
+// Copy operator (see also copy constructor)
 template < class T >
-T & Vector < T >::operator [](size_t i) {
+    Vector < T > &Vector < T >::operator =(const Vector < T > &v)
+{
+	if (m_n > 0 && (v.m_n != m_n)) {
+		free_array();
+
+		m_n = v.m_n;
+		m_v = (T **) calloc(v.m_n, sizeof(T *));
+
+		for (size_t i = 0; i < m_n; i++) {
+			m_v[i] = new T();
+			*(m_v[i]) = *v.m_v[i];
+		}
+	} else if (m_n == 0) {
+		m_n = v.m_n;
+		m_v = (T **) calloc(v.m_n, sizeof(T *));
+		for (size_t i = 0; i < m_n; i++) {
+			m_v[i] = new T();
+			*(m_v[i]) = *v.m_v[i];
+		}
+	} else {
+		for (size_t i = 0; i < m_n; i++) {
+			*(m_v[i]) = *v.m_v[i];
+		}
+	}
+
+	return *this;
+
+}
+
+// Index operator
+template < class T > T & Vector < T >::operator [](size_t i) {
 	if (i > (m_n - 1)) {
 		std::ostringstream s;
 		s << "Index [" << i <<
@@ -116,7 +147,8 @@ T & Vector < T >::operator [](size_t i) {
 
 // Add operator
 template < class T >
-const Vector< T > operator +(const Vector< T > lhs, const Vector< T > & rhs)
+    const Vector < T > operator +(const Vector < T > lhs,
+				  const Vector < T > &rhs)
 {
 	if (lhs.m_n != rhs.m_n) {
 		std::ostringstream s;
@@ -134,12 +166,13 @@ const Vector< T > operator +(const Vector< T > lhs, const Vector< T > & rhs)
 
 // Subtract operator
 template < class T >
-const Vector< T > operator -(const Vector< T > lhs, const Vector< T > & rhs)
+    const Vector < T > operator -(const Vector < T > lhs,
+				  const Vector < T > &rhs)
 {
 	if (lhs.m_n != rhs.m_n) {
 		std::ostringstream s;
-		s << "Vectors must have the same dimension to be subtracted. [" <<
-		    (lhs.m_n - 1) << "] != [" << (rhs.m_n - 1) << "]";
+		s << "Vectors must have the same dimension to be subtracted. ["
+		    << (lhs.m_n - 1) << "] != [" << (rhs.m_n - 1) << "]";
 		std::string eMsg(s.str());
 		throw std::invalid_argument(eMsg);
 	}
@@ -177,8 +210,8 @@ const Vector operator /(const Vector lhs, const T & d)
 }
 #endif				//NEVER
 
-template < class T >
-void Vector < T >::free_array() {
+template < class T > void Vector < T >::free_array()
+{
 	if (m_n > 0 && m_v) {
 		for (size_t i = 0; i < m_n; i++) {
 			free(m_v[i]);
@@ -188,8 +221,7 @@ void Vector < T >::free_array() {
 }
 
 // Destructor.
-template < class T >
-Vector < T >::~Vector()
+template < class T > Vector < T >::~Vector()
 {
 	--instances;
 	free_array();
@@ -197,15 +229,11 @@ Vector < T >::~Vector()
 
 /* Class stats variables */
 // Below is probably not such a good idea...
-template < class T >
-int Vector < T >::instances = 0;
-template < class T >
-int Vector < T >::ntotever = 0;
-
+template < class T > int Vector < T >::instances = 0;
+template < class T > int Vector < T >::ntotever = 0;
 
 /* NOTE Stubbed TBD !!!*/
-template < class T >
-bool Vector < T >::is_zero(const T & d)
+template < class T > bool Vector < T >::is_zero(const T & d)
 {
 	return false;
 }

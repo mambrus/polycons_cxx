@@ -35,14 +35,20 @@ MATH_EXPORT template < class T > class Vector {
  public:
 	MATH_EXPORT Vector();
 	MATH_EXPORT Vector(size_t, T[]);
-	MATH_EXPORT Vector(size_t ...);
+	MATH_EXPORT Vector(size_t, T);
+	MATH_EXPORT Vector(size_t);
 
 	//Copy constructor
 	MATH_EXPORT Vector(const Vector & v);
 
+	MATH_EXPORT inline int Length() {
+		return m_n;
+	}
+
 	// Operators
 	// Assignment
 	MATH_EXPORT virtual Vector & operator =(const T i);
+	MATH_EXPORT virtual Vector & operator =(const T a[]);
 	MATH_EXPORT virtual Vector & operator =(const Vector & v);
 
 	// Index operator
@@ -50,17 +56,18 @@ MATH_EXPORT template < class T > class Vector {
 
 	//Linear algebra operators
 	template < class Y >
-	MATH_EXPORT const friend Vector< Y > operator +(const Vector< Y > lhs,
-						   const Vector< Y > & v);
-	template < class Y >
-	MATH_EXPORT const friend Vector< Y > operator -(const Vector< Y > lhs,
-						   const Vector< Y > & v);
-#ifdef NEVER
+	    MATH_EXPORT const friend Vector < Y > operator +(const Vector < Y >
+							     lhs,
+							     const Vector < Y >
+							     &v);
+	template < class Y > MATH_EXPORT const friend Vector < Y >
+	    operator -(const Vector < Y > lhs, const Vector < Y > &v);
+#    ifdef NEVER
 	MATH_EXPORT const friend Vector operator *(const Vector lhs,
 						   const T & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
 						   const T & d);
-#endif					//NEVER
+#    endif			//NEVER
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;
