@@ -55,19 +55,23 @@ MATH_EXPORT template < class T > class Vector {
 	MATH_EXPORT virtual T & operator[] (size_t i);
 
 	//Linear algebra operators
+	// ====================================================================
 	template < class Y >
 	    MATH_EXPORT const friend Vector < Y > operator +(const Vector < Y >
 							     lhs,
 							     const Vector < Y >
-							     &v);
+							     &);
 	template < class Y > MATH_EXPORT const friend Vector < Y >
-	    operator -(const Vector < Y > lhs, const Vector < Y > &v);
+	    operator -(const Vector < Y >, const Vector < Y > &);
+
+
 #    ifdef NEVER
 	MATH_EXPORT const friend Vector operator *(const Vector lhs,
 						   const T & m);
 	MATH_EXPORT const friend Vector operator /(const Vector lhs,
 						   const T & d);
 #    endif			//NEVER
+	// ====================================================================
 
 	MATH_EXPORT friend ostream & operator<<(ostream & out, const Vector & v) {
 		size_t i;

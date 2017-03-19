@@ -269,6 +269,50 @@ int main(int argc, char *argv[])
 			cout << "A:" << A << endl;
 			cout << "B:" << B << endl;
 		}
+		// Define a 2-dimensional ditto
+		cout << endl;
+		{
+			int i, j;
+			int dim1 = 3, dim2 = 4;
+
+			// Create the matrix
+			printf("Instantiating matrixs\n");
+			Vector < Vector < int > >mx1(dim1,
+						       Vector < int >(dim2));
+			Vector < Vector < int > >mx2(dim1,
+						       Vector < int >(dim2));
+			printf("Initializing matrixs\n");
+			mx1 = MatrixInitialize < int >(mx1, 11);
+			mx2 = MatrixInitialize < int >(mx2, 57);
+			Vector < Vector < int > >mx3 = mx1 + mx2;
+			Vector < Vector < int > >mx4 = mx2 - mx1;
+
+			// Print matrix out in various forms and using various methods
+			for (i = 0; i < dim1; i++) {
+				for (j = 0; j < dim2; j++) {
+					cout << "[" << i << "." << j << "] : ";
+					cout << mx3[i][j] << endl;
+				}
+				cout << "[" << i << "]: " << mx3[i] << endl;
+				cout << endl;
+			}
+			cout << endl;
+			// Print matrix out in various forms and using various methods
+			for (i = 0; i < dim1; i++) {
+				for (j = 0; j < dim2; j++) {
+					cout << "[" << i << "." << j << "] : ";
+					cout << mx4[i][j] << endl;
+				}
+				cout << "[" << i << "]: " << mx4[i] << endl;
+				cout << endl;
+			}
+			cout << endl;
+			cout << "mx1: " << mx1 << endl;
+			cout << "mx2: " << mx2 << endl;
+			cout << "mx3: " << mx3 << endl;
+			cout << "mx4: " << mx4 << endl;
+			cout << endl;
+		}
 
 #ifdef NO_LINALGEBRA
 		// ===========================================

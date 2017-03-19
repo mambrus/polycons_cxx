@@ -159,7 +159,7 @@ template < class T >
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		*(lhs.m_v[i]) += *(rhs.m_v[i]);
+		*(lhs.m_v[i]) = *(lhs.m_v[i]) + *(rhs.m_v[i]);
 	}
 	return lhs;
 }
@@ -178,7 +178,7 @@ template < class T >
 	}
 
 	for (size_t i = 0; i < lhs.m_n; i++) {
-		*(lhs.m_v[i]) -= *(rhs.m_v[i]);
+		*(lhs.m_v[i]) = *(lhs.m_v[i]) - *(rhs.m_v[i]);
 	}
 	return lhs;
 }
